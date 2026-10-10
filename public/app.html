@@ -611,7 +611,7 @@ $("amount").addEventListener("input", (e) => {
 
 function showResult(o) {
   const link = location.origin + "/g/" + o.code;
-  const intro = "🎁 You've received a $" + fmtAmt(o.amount) + " USDC gift on Tessera!";
+  const intro = "You've received a $" + fmtAmt(o.amount) + " USDC gift on Tessera!<img src="https://raw.githubusercontent.com/PhylippusRex/tessera/main/public/brand/usdc.svg" alt="USDC" width="20" height="20" style="vertical-align: middle;">";
   const enc = encodeURIComponent;
   $("sendForm").hidden = true;
   $("sendResult").hidden = false;
