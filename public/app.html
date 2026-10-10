@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESC}}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tessera">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESC}}">
+<meta property="og:url" content="{{URL}}">
+<meta property="og:image" content="{{IMAGE}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{TITLE}}">
+<meta name="twitter:description" content="{{DESC}}">
+<meta name="twitter:image" content="{{IMAGE}}">
+<link rel="icon" href="/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/brand/favicon.png">
+<style>
+@font-face{font-family:'Barlow';font-weight:400;font-display:swap;src:url(/fonts/Barlow-Regular.ttf) format('truetype')}
+@font-face{font-family:'Barlow';font-weight:500;font-display:swap;src:url(/fonts/Barlow-Medium.ttf) format('truetype')}
+@font-face{font-family:'Barlow';font-weight:600;font-display:swap;src:url(/fonts/Barlow-SemiBold.ttf) format('truetype')}
+@font-face{font-family:'Barlow';font-weight:700;font-display:swap;src:url(/fonts/Barlow-Bold.ttf) format('truetype')}
+@font-face{font-family:'Barlow Semi Condensed';font-weight:400;font-display:swap;src:url(/fonts/BarlowSemiCondensed-Regular.ttf) format('truetype')}
+@font-face{font-family:'Barlow Semi Condensed';font-weight:700;font-display:swap;src:url(/fonts/BarlowSemiCondensed-Bold.ttf) format('truetype')}
+
+/* ============ TOKENS (colors from the Tessera.html mockup) ============ */
+:root{
+  --lime:#C8DB2F; --lime-dk:#A9BC1C;
+  --ink:#17181C; --ink-2:#232428; --ink-3:#2E2F34;
+  --paper:#F4F2EC; --paper-2:#EAE8E0; --white:#FFFFFF;
+  --muted:#5C5E66; --muted-lt:#9A9CA4;
+  --line:rgba(23,24,28,.14); --line-lt:rgba(244,242,236,.16);
+  --r-lg:28px; --r-md:18px; --r-sm:14px; --pill:999px;
+  --fd:'Barlow Semi Condensed','Barlow',sans-serif; --fb:'Barlow',system-ui,sans-serif; --fm:'Barlow',system-ui,sans-serif;
+  --shadow:0 24px 60px -24px rgba(23,24,28,.28);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+[hidden]{display:none!important}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+::selection{background:var(--lime);color:var(--ink)}
+h1,h2,h3{font-family:var(--fd);letter-spacing:-.01em;line-height:1}
+h1{font-size:clamp(54px,7.6vw,96px);font-weight:700}
+h2{font-size:clamp(40px,5vw,64px);font-weight:700}
+h3{font-size:24px;font-weight:700}
+p{color:var(--muted)}
+img{display:block;max-width:100%}
+.wrap{max-width:1160px;margin:0 auto;padding:0 32px}
+.eyebrow{font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:'';width:8px;height:8px;background:var(--lime);border:1.5px solid var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border-radius:var(--pill);padding:15px 26px;font-family:var(--fb);font-weight:600;font-size:16px;border:1.5px solid transparent;cursor:pointer;text-decoration:none;transition:transform .18s,background .18s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-outline{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-lime{background:var(--lime);color:var(--ink);border-color:var(--ink)}
+.btn-ghost{color:var(--paper);border-color:var(--line-lt);background:transparent}
+.btn-full{width:100%}
+.btn-sm{padding:10px 18px;font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:8px;border-radius:var(--pill);padding:7px 14px;font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+
+/* ============ HEADER ============ */
+header{position:sticky;top:0;z-index:40;background:rgba(244,242,236,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 32px;max-width:1240px;margin:0 auto;gap:12px}
+.logo{display:flex;align-items:center}
+.logo img{height:46px;width:auto}
+.navlinks{display:flex;gap:28px;font-size:15px;font-weight:500}
+.navlinks a{color:var(--muted);text-decoration:none}
+.navlinks a:hover{color:var(--ink)}
+.navright{display:flex;align-items:center;gap:12px}
+.net{border:1px solid var(--line);background:var(--white)}
+.net i{width:7px;height:7px;border-radius:50%;background:var(--lime);border:1px solid var(--ink)}
+
+/* ============ HERO ============ */
+.hero{padding:80px 0 96px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 1px 1px,rgba(23,24,28,.10) 1px,transparent 0) 0 0/26px 26px;-webkit-mask-image:linear-gradient(to bottom,black,transparent 62%);mask-image:linear-gradient(to bottom,black,transparent 62%);opacity:.5;pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative}
+.hero h1{margin:22px 0 22px;isolation:isolate}
+.hero h1 em{font-style:normal;position:relative;white-space:nowrap}
+.hero h1 em::after{content:'';position:absolute;left:0;right:0;bottom:6px;height:.26em;background:var(--lime);z-index:-1}
+.hero-sub{font-size:19px;max-width:44ch}
+.hero-cta{display:flex;gap:14px;margin:32px 0 26px;flex-wrap:wrap}
+.hero-meta{display:flex;gap:10px;flex-wrap:wrap}
+.hero-meta .chip{background:var(--white);border:1px solid var(--line)}
+.hero-art{position:relative;padding:34px 10px 40px}
+.hero-card{width:100%;transform:rotate(-4deg);border-radius:18px;box-shadow:var(--shadow)}
+.art-chip{position:absolute;font-family:var(--fm);font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:var(--white);border:1.5px solid var(--ink);border-radius:var(--pill);padding:6px 12px;box-shadow:4px 4px 0 var(--lime);z-index:2}
+.art-chip.top{top:0;left:0}
+.art-chip.bot{bottom:0;right:0}
+.claim-chip{position:absolute;bottom:14%;left:-6px;background:var(--ink);color:var(--paper);border-radius:var(--pill);padding:9px 16px;font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;display:flex;gap:8px;align-items:center;box-shadow:4px 4px 0 var(--lime);z-index:2}
+.claim-chip i{width:8px;height:8px;border-radius:50%;background:var(--lime);border:1.5px solid var(--ink)}
+
+/* ============ BAND ============ */
+.band{background:var(--ink);color:var(--paper);overflow:hidden;padding:16px 0;border-block:1.5px solid var(--ink)}
+.band-track{display:flex;gap:56px;width:max-content;animation:mq 30s linear infinite;font-family:var(--fm);font-weight:600;font-size:13px;letter-spacing:.22em;text-transform:uppercase;white-space:nowrap}
+.band-track b{color:var(--lime);font-weight:400}
+@keyframes mq{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.band-track{animation:none}}
+
+/* ============ SECTIONS ============ */
+section{padding:96px 0}
+.sec-head{max-width:640px;margin:0 auto 64px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;position:relative;margin-top:8px}
+.steps::before{content:'';position:absolute;top:6px;left:8%;right:8%;border-top:2px dashed var(--line)}
+.step{position:relative;padding-top:36px}
+.step::before{content:'';position:absolute;top:0;left:0;width:13px;height:13px;border-radius:50%;background:var(--lime);border:2px solid var(--ink)}
+.step .num{font-family:var(--fm);font-weight:600;font-size:12px;color:var(--muted-lt);letter-spacing:.16em}
+.step h3{margin:8px 0 10px}
+.step p{font-size:16px}
+
+.dark{background:var(--ink);color:var(--paper)}
+.dark p{color:var(--muted-lt)}
+.dark .eyebrow{color:var(--muted-lt)}
+.show-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.show-list{display:flex;flex-direction:column;gap:16px;margin:28px 0 32px}
+.show-list li{list-style:none;display:flex;gap:12px;align-items:flex-start;font-size:16px;color:#D6D5D0}
+.show-list li::before{content:'';flex:none;margin-top:8px;width:8px;height:8px;background:var(--lime)}
+.flip{perspective:1400px;container-type:inline-size;cursor:pointer}
+.flip-inner{position:relative;transition:transform .8s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.flip:hover .flip-inner,.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.flip .face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flip .face img{width:100%;border-radius:2.1cqw}
+.flip .back{position:absolute;inset:0;transform:rotateY(180deg);background:var(--ink-2);border-radius:2.1cqw;color:#F5F5F4;padding:6cqw;display:flex;flex-direction:column;justify-content:center;gap:14px;border-top:6px solid var(--lime)}
+.back .lbl{font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.24em;color:var(--muted-lt)}
+.back .code-big{font-family:var(--fm);font-weight:600;font-size:clamp(16px,4.4cqw,24px);letter-spacing:.08em;color:var(--lime)}
+.back p{color:var(--muted-lt);font-size:15px}
+.flip-hint{font-family:var(--fm);font-weight:600;font-size:11px;letter-spacing:.18em;color:var(--muted-lt);text-align:right;margin-top:12px;text-transform:uppercase}
+
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feat{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:30px;display:flex;flex-direction:column;gap:14px;transition:transform .2s,box-shadow .2s}
+.feat:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.feat .ico{width:46px;height:46px;border-radius:12px;background:var(--lime);border:1.5px solid var(--ink);display:grid;place-items:center}
+.feat p{font-size:16px}
+
+.stats-sec{background:var(--paper-2);padding:64px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:8px 32px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:none;padding-left:0}
+.stat b{font-family:var(--fd);font-weight:700;font-size:48px;letter-spacing:-.01em;display:block;line-height:1.05}
+.stat span{font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+
+.cta{background:var(--ink);color:var(--paper);text-align:center}
+.cta .inner{max-width:560px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:20px}
+.cta .inner img{width:96px;height:auto}
+.cta p{color:var(--muted-lt)}
+.cta .row{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap;justify-content:center}
+
+footer{padding:32px 0;border-top:1px solid var(--line)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.foot .logo img{height:40px}
+.foot .small{font-family:var(--fm);font-weight:600;font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.foot nav{display:flex;gap:22px;font-size:15px}
+.foot nav a{color:var(--muted);text-decoration:none}
+.foot nav a:hover{color:var(--ink)}
+
+/* ============ SEND / CLAIM VIEWS ============ */
+.view{display:none}
+.view.on{display:block}
+.page{padding:64px 0 120px}
+.send-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.panel{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r-lg);padding:36px}
+.panel h2{font-size:46px;margin:14px 0 10px}
+.field{margin-top:22px}
+.field label{display:block;font-weight:600;font-size:14px;margin-bottom:8px}
+.input{width:100%;padding:15px 16px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--white);font-family:var(--fb);font-size:17px;color:var(--ink);outline:none}
+.input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(200,219,47,.45)}
+.input.amt{font-family:var(--fd);font-weight:700;font-size:30px;padding-right:76px}
+.input.addr{letter-spacing:.02em}
+.suffix{position:relative}
+.suffix .u{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:var(--fm);font-weight:600;font-size:13px;letter-spacing:.08em;color:var(--muted)}
+.fee-line{font-family:var(--fm);font-weight:500;font-size:14px;color:var(--muted);margin:20px 0 18px;min-height:20px}
+.fine{font-size:14px;color:var(--muted);text-align:center;margin-top:16px}
+.status{font-size:15px;margin-top:14px;min-height:22px;text-align:center;color:var(--ink)}
+.status.err,.fee-line.err{color:#B3261E}
+.status a{color:var(--ink);font-weight:600}
+.preview-wrap img{width:100%;border-radius:18px;box-shadow:var(--shadow);background:var(--ink-2);aspect-ratio:1.613}
+.prev-cap{font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:14px;text-align:center}
+.prev-msg{font-style:italic;color:var(--ink);text-align:center;margin-top:6px;min-height:24px}
+.stepper{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:26px;margin-top:24px}
+.stepper h4{font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:18px}
+.st{display:flex;gap:14px;position:relative;padding-bottom:26px}
+.st:last-child{padding-bottom:0}
+.st::before{content:'';position:absolute;left:9px;top:22px;bottom:0;border-left:2px dashed var(--line)}
+.st:last-child::before{display:none}
+.st i{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);background:var(--white);flex-shrink:0;position:relative;z-index:1}
+.st.done i{background:var(--lime)}
+.st.now i{background:var(--lime);box-shadow:0 0 0 5px rgba(200,219,47,.3)}
+.st b{font-size:16px;display:block}
+.st span{font-size:14.5px;color:var(--muted)}
+.history{margin-top:24px;background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:22px 26px}
+.history h4{font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.history ul{padding-left:18px;font-size:15px;display:flex;flex-direction:column;gap:6px}
+.history a{color:var(--ink)}
+.linkbox{word-break:break-all;background:var(--white);border:1.5px dashed var(--line);border-radius:var(--r-sm);padding:14px;font-size:14px;margin-top:18px}
+.warn{background:#FFF7DB;border:1px solid #E7D58A;border-radius:var(--r-sm);padding:12px 14px;font-size:14px;margin-top:18px;color:var(--ink)}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.share a,.share button{display:block;text-align:center;text-decoration:none;padding:14px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--white);color:var(--ink);font-family:var(--fb);font-size:16px;font-weight:600;cursor:pointer}
+.share a:hover,.share button:hover{border-color:var(--ink)}
+.result-actions{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:8px}
+.result-actions a{color:var(--ink);font-weight:600}
+
+.claim-col{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.claim-col h1{font-size:clamp(44px,8vw,64px);text-align:center}
+.cd{align-self:center;background:var(--ink);color:var(--paper);border-radius:var(--pill);padding:9px 18px;font-family:var(--fm);font-weight:600;font-size:13px;letter-spacing:.12em;display:flex;align-items:center;gap:10px;text-transform:uppercase}
+.cd b{color:var(--lime);font-weight:600}
+.claim-card img{width:100%;border-radius:18px;box-shadow:var(--shadow)}
+.claim-msg{font-style:italic;text-align:center;color:var(--ink);font-size:18px}
+.addr-row{display:flex;justify-content:flex-end}
+.addr-row button{background:none;border:none;font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.08em;cursor:pointer;text-decoration:underline;text-transform:uppercase;color:var(--ink)}
+.helper{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:26px}
+.helper h4{font-size:17px;margin-bottom:12px}
+.helper ol{padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--muted)}
+.receipt{border:1.5px dashed var(--line);border-radius:var(--r-md);padding:20px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.receipt .mono{font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.receipt a{color:var(--ink);font-weight:600}
+.receipt .ok{display:flex;gap:8px;align-items:center;font-family:var(--fm);font-weight:600;font-size:12px;letter-spacing:.06em;color:var(--ink);text-transform:uppercase}
+.receipt .ok i{width:8px;height:8px;border-radius:50%;background:var(--lime);border:1.5px solid var(--ink)}
+
+@media(max-width:960px){
+  .hero-grid,.show-grid,.send-grid{grid-template-columns:1fr}
+  .steps,.feat-grid{grid-template-columns:1fr}
+  .steps::before{display:none}
+  .stats{grid-template-columns:repeat(2,1fr);gap:28px 0}
+  .stat{padding-left:0;border-left:none}
+  .navlinks{display:none}
+  .net{display:none}
+  .hero{padding:48px 0 64px}
+  section{padding:72px 0}
+}
+@media(max-width:560px){
+  .wrap{padding:0 20px}
+  .nav{padding:10px 20px}
+  .logo img{height:38px}
+  .panel{padding:24px}
+  .page{padding:40px 0 80px}
+  .hero-art{padding:30px 0 36px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="nav">
+    <a class="logo" href="/" data-go="landing" aria-label="Tessera home"><img src="/brand/logo-header.svg" alt="Tessera"></a>
+    <nav class="navlinks">
+      <a href="/#how" data-go="landing" data-anchor="how">How it works</a>
+      <a href="/#card" data-go="landing" data-anchor="card">The card</a>
+      <a href="/#features" data-go="landing" data-anchor="features">Features</a>
+      <a href="/send" data-go="send">Send</a>
+      <a href="/claim" data-go="claim">Claim</a>
+    </nav>
+    <div class="navright">
+      <span class="chip net"><i></i><span id="netName">ARC MAINNET</span></span>
+      <button class="btn btn-ink btn-sm" id="connectBtn" type="button">Connect wallet</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================ HOME -->
+<main class="view" id="view-landing">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">USDC gift cards on Arc</span>
+        <h1>Gift USDC<br>like a <em>gift card.</em></h1>
+        <p class="hero-sub">Create a code, share a link. They claim it from any wallet, with no gas and no setup.</p>
+        <div class="hero-cta">
+          <a class="btn btn-ink" href="/send" data-go="send">Send a gift →</a>
+          <a class="btn btn-outline" href="/claim" data-go="claim">Claim a gift</a>
+        </div>
+        <div class="hero-meta">
+          <span class="chip">0 gas for claimers</span>
+          <span class="chip">Single-use codes</span>
+          <span class="chip">Settled on Arc mainnet</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <span class="art-chip top">01 · Sender funds</span>
+        <img class="hero-card" src="/brand/card-sample.png" alt="Tessera USDC gift card" width="1200" height="744">
+        <span class="claim-chip"><i></i>Gas paid by Tessera</span>
+        <span class="art-chip bot">03 · Recipient claims</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="band"><div class="band-track">
+    <span>Single-use codes <b>◆</b> Gasless claims <b>◆</b> USDC on Arc <b>◆</b> 30-day refunds <b>◆</b> Settled on Arc mainnet <b>◆</b></span>
+    <span>Single-use codes <b>◆</b> Gasless claims <b>◆</b> USDC on Arc <b>◆</b> 30-day refunds <b>◆</b> Settled on Arc mainnet <b>◆</b></span>
+  </div></div>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">How it works</span>
+        <h2>Three steps. One gift.</h2>
+        <p>Fund a card, share the link, and they claim it. Arc escrow holds the USDC the whole way, and nothing moves until the right code is used.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="num">01 / FUND</span><h3>Create &amp; fund</h3><p>Choose an amount, add a message, and fund it with USDC on Arc. A unique code is made in your browser.</p></div>
+        <div class="step"><span class="num">02 / SHARE</span><h3>Share the link</h3><p>The USDC waits in escrow on Arc. Send the link by email, WhatsApp, Telegram or X.</p></div>
+        <div class="step"><span class="num">03 / CLAIM</span><h3>They claim it</h3><p>They paste any wallet address. Tessera pays the gas, and the code can never be used twice.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark" id="card">
+    <div class="wrap show-grid">
+      <div>
+        <span class="eyebrow">The card</span>
+        <h2 style="margin:16px 0 14px">A card they'll<br>actually screenshot.</h2>
+        <p>Dark card, lime mark, masked code. It looks like a gift before it behaves like money.</p>
+        <ul class="show-list">
+          <li>The card picture never shows the real code</li>
+          <li>Your message travels with the link and the email</li>
+          <li>One link, one claim, settled on Arc mainnet</li>
+        </ul>
+        <a class="btn btn-lime" href="/send" data-go="send">Create your first card</a>
+      </div>
+      <div>
+        <div class="flip" id="flip">
+          <div class="flip-inner">
+            <div class="face"><img src="/brand/card-sample.png" alt="Front of a Tessera gift card" width="1200" height="744"></div>
+            <div class="back face">
+              <span class="lbl">REDEEM ONCE · ON ARC</span>
+              <span class="code-big">TSRA-XXXX-XXXX-XXXX-XXXX</span>
+              <p>Unclaimed after 30 days? The sender can take the USDC back.</p>
+            </div>
+          </div>
+        </div>
+        <div class="flip-hint">Hover or tap to flip</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Features</span>
+        <h2>Everything a gift should be</h2>
+        <p>Small on purpose. One primitive, a claimable USDC voucher, done completely.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#17181C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5L16 9.5"/></svg></div>
+          <h3>Single-use codes</h3>
+          <p>Each link redeems exactly once. The state lives on Arc, so a screenshot or a second try can't claim it again.</p>
+        </div>
+        <div class="feat">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#17181C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
+          <h3>Gasless claims</h3>
+          <p>Recipients paste any address: MetaMask, Rabby, even a fresh wallet. The sender covers the small network fee up front.</p>
+        </div>
+        <div class="feat">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#17181C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Refund after 30 days</h3>
+          <p>If nobody claims the gift within 30 days, the sender can take the USDC back from the contract.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-sec"><div class="wrap stats">
+    <div class="stat"><b>0</b><span>gas for claimers</span></div>
+    <div class="stat"><b>1</b><span>claim per code</span></div>
+    <div class="stat"><b>30 days</b><span>before a refund</span></div>
+    <div class="stat"><b>Arc</b><span>mainnet settlement</span></div>
+  </div></div>
+
+  <section class="cta">
+    <div class="wrap inner">
+      <img src="/brand/logo-standalone.svg" alt="Tessera">
+      <h2>Send your first gift.</h2>
+      <p>It takes under a minute. Their side takes one tap and an address.</p>
+      <div class="row">
+        <a class="btn btn-lime" href="/send" data-go="send">Send a gift</a>
+        <a class="btn btn-ghost" href="/claim" data-go="claim">Claim a gift</a>
+      </div>
+    </div>
+  </section>
+
+  <footer><div class="wrap foot">
+    <a class="logo" href="/" data-go="landing" aria-label="Tessera home"><img src="/brand/logo-header.svg" alt="Tessera"></a>
+    <span class="small">Built on Arc · Powered by USDC · © 2026</span>
+    <nav><a href="#" id="ghLink" target="_blank" rel="noopener">GitHub</a><a href="#" id="contractLink" target="_blank" rel="noopener">Contract</a></nav>
+  </div></footer>
+</main>
+
+<!-- ============================================================ SEND -->
+<main class="view" id="view-send">
+  <section class="page"><div class="wrap send-grid">
+    <div>
+      <div class="panel" id="sendForm">
+        <span class="eyebrow">01 / Fund</span>
+        <h2>Send a gift</h2>
+        <p>You pay the amount plus a tiny network fee. They receive the exact amount.</p>
+        <div class="field"><label for="amount">Amount (USDC)</label>
+          <div class="suffix"><input class="input amt" id="amount" inputmode="decimal" autocomplete="off" placeholder="50"><span class="u">USDC</span></div>
+        </div>
+        <div class="field"><label for="message">Message (optional)</label><input class="input" id="message" maxlength="140" placeholder="Happy birthday!"></div>
+        <div class="field"><label for="senderName">Your name (optional)</label><input class="input" id="senderName" maxlength="40" placeholder="Shown in the email"></div>
+        <div class="field"><label for="toEmail">Recipient email (optional)</label><input class="input" id="toEmail" type="email" placeholder="friend@example.com"></div>
+        <p class="fee-line" id="feeLine"></p>
+        <button class="btn btn-ink btn-full" id="createBtn" type="button">Create gift</button>
+        <p class="fine">Anyone with the link can claim it. Send it privately.</p>
+        <p class="status" id="sendStatus"></p>
+      </div>
+
+      <div class="panel" id="sendResult" hidden>
+        <span class="eyebrow">02 / Share</span>
+        <h2>Your gift is ready</h2>
+        <p>Send the link below. The first person to claim it gets the USDC.</p>
+        <div class="warn">Anyone with this link can claim the gift. Send it privately (DM or email) and never post it publicly.</div>
+        <div class="linkbox" id="linkBox"></div>
+        <div class="share">
+          <a id="shWhatsapp" target="_blank" rel="noopener">WhatsApp</a>
+          <a id="shTelegram" target="_blank" rel="noopener">Telegram</a>
+          <a id="shEmail">Email app</a>
+          <button id="shX" type="button">X DM</button>
+          <button id="shMore" type="button">More apps…</button>
+          <button id="shCopy" type="button">Copy link</button>
+        </div>
+        <div class="result-actions">
+          <a id="txLink" href="#" target="_blank" rel="noopener">View transaction ↗</a>
+          <button class="btn btn-outline btn-sm" id="againBtn" type="button">Create another</button>
+        </div>
+        <p class="status" id="resultStatus"></p>
+      </div>
+    </div>
+
+    <div>
+      <div class="preview-wrap">
+        <img id="cardPrev" src="/brand/card-sample.png" alt="Gift card preview" width="1200" height="744">
+        <div class="prev-cap">Preview · updates as you type</div>
+        <div class="prev-msg" id="prevMsg"></div>
+      </div>
+      <div class="stepper">
+        <h4>Where your gift is</h4>
+        <div class="st now" id="st1"><i></i><div><b>Fund</b><span>You fund the card with USDC on Arc.</span></div></div>
+        <div class="st" id="st2"><i></i><div><b>Share</b><span>Escrow holds it while the link travels.</span></div></div>
+        <div class="st" id="st3"><i></i><div><b>Claim</b><span>They claim to any address. The gas is covered.</span></div></div>
+      </div>
+      <div class="history" id="historyBox" hidden><h4>Your recent gifts</h4><ul id="history"></ul></div>
+    </div>
+  </div></section>
+</main>
+
+<!-- ============================================================ CLAIM -->
+<main class="view" id="view-claim">
+  <section class="page"><div class="wrap claim-col">
+    <div id="codeBox" hidden>
+      <h1>Claim your gift</h1>
+      <div class="field"><label for="codeInput">Gift code</label><input class="input addr" id="codeInput" placeholder="TSRA-XXXX-XXXX-XXXX-XXXX" autocapitalize="characters" autocomplete="off"></div>
+      <button class="btn btn-ink btn-full" id="checkBtn" type="button" style="margin-top:16px">Check code</button>
+    </div>
+    <div class="cd" id="cdPill" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8DB2F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>EXPIRES IN <b id="cd">--</b></div>
+    <div class="claim-card" id="claimCard" hidden><img id="claimImg" src="/brand/card-sample.png" alt="Your Tessera gift card" width="1200" height="744"></div>
+    <div class="claim-msg" id="claimMsg" hidden></div>
+    <div id="claimBox" hidden>
+      <div class="field" style="margin-top:0"><label for="addr">Where should we send it?</label><input class="input addr" id="addr" placeholder="0x…" autocapitalize="off" autocomplete="off" spellcheck="false"></div>
+      <div class="addr-row" style="margin-top:8px"><button id="walletBtn" type="button">Use my wallet</button></div>
+      <button class="btn btn-ink btn-full" id="claimBtn" type="button" style="margin-top:14px">Claim gift</button>
+      <p class="fine">No gas needed. It's covered.</p>
+    </div>
+    <p class="status" id="claimStatus"></p>
+    <div class="receipt" id="receipt" hidden>
+      <span class="mono">TX <a id="rcptLink" href="#" target="_blank" rel="noopener">view on Arc ↗</a></span>
+      <span class="ok"><i></i>Confirmed · code used</span>
+    </div>
+    <div class="helper">
+      <h4>Don't have a wallet?</h4>
+      <ol><li>Install a wallet app (MetaMask or Rabby).</li><li>Create a wallet and copy your address (it starts with 0x).</li><li>Paste it above and tap Claim. Your USDC arrives on Arc.</li></ol>
+    </div>
+  </div></section>
+</main>
+
+<script src="/vendor/ethers.umd.min.js"></script>
+<script>
+"use strict";
+const GITHUB_URL = "https://github.com/PhylippusRex/tessera";
+const $ = (id) => document.getElementById(id);
+const CODE_RE = /^TSRA(-[A-HJ-NP-Z2-9]{4}){4}$/;
+const AMOUNT_RE = /^\d{1,9}(\.\d{1,6})?$/;
+const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const TESSERA_ABI = ["function createGift(bytes32 codeHash, uint256 amount, string message)"];
+const USDC_ABI = [
+  "function approve(address,uint256) returns (bool)",
+  "function allowance(address,address) view returns (uint256)",
+  "function balanceOf(address) view returns (uint256)"
+];
+const views = { landing: $("view-landing"), send: $("view-send"), claim: $("view-claim") };
+const PATHS = { landing: "/", send: "/send", claim: "/claim" };
+let cfg = null, signer = null, account = null, claimCode = "", cdTimer = null;
+
+/* ---------- helpers ---------- */
+function setText(id, msg, isErr) { const el = $(id); el.textContent = msg; el.classList.toggle("err", !!isErr); }
+function nice(s) { return s.indexOf(".") === -1 ? s : s.replace(/0+$/, "").replace(/\.$/, ""); }
+function fmtAmt(a) { return Number(a).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 6 }); }
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) { window.prompt("Copy this:", text); return false; }
+}
+async function api(path, body) {
+  const r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || "Something went wrong");
+  return data;
+}
+
+/* ---------- router (Home / Send / Claim) ---------- */
+function show(view) {
+  Object.keys(views).forEach((k) => views[k].classList.toggle("on", k === view));
+}
+function go(view, anchor, path) {
+  show(view);
+  history.pushState({}, "", path || PATHS[view]);
+  if (view === "claim") startClaim("");
+  if (anchor && $(anchor)) $(anchor).scrollIntoView(); else window.scrollTo({ top: 0 });
+}
+function routeFromLocation() {
+  const p = location.pathname;
+  const m = p.match(/^\/g\/([^/]+)/);
+  if (m) { show("claim"); startClaim(decodeURIComponent(m[1])); }
+  else if (p === "/claim") { show("claim"); startClaim(""); }
+  else if (p === "/send") show("send");
+  else show("landing");
+}
+document.querySelectorAll("[data-go]").forEach((el) => el.addEventListener("click", (e) => {
+  e.preventDefault();
+  go(el.dataset.go, el.dataset.anchor);
+}));
+window.addEventListener("popstate", routeFromLocation);
+$("flip").addEventListener("click", () => $("flip").classList.toggle("flipped"));
+
+/* ---------- wallet ---------- */
+async function connect() {
+  if (!cfg) throw new Error("The server is not reachable yet. Please try again.");
+  if (!window.ethereum) throw new Error("No wallet found. Open this page inside your wallet app's browser (MetaMask, Rabby, Trust…) or use a desktop browser with a wallet extension.");
+  await window.ethereum.request({ method: "eth_requestAccounts" });
+  try {
+    await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: cfg.chainIdHex }] });
+  } catch (e) {
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{ chainId: cfg.chainIdHex, chainName: cfg.chainName, nativeCurrency: { name: "USDC", symbol: "USDC", decimals: 18 }, rpcUrls: [cfg.rpc], blockExplorerUrls: [cfg.explorerBase] }]
+    });
+  }
+  signer = await new ethers.BrowserProvider(window.ethereum).getSigner();
+  account = await signer.getAddress();
+  $("connectBtn").textContent = account.slice(0, 6) + "…" + account.slice(-4);
+}
+$("connectBtn").addEventListener("click", () => {
+  const view = views.send.classList.contains("on") ? "sendStatus" : views.claim.classList.contains("on") ? "claimStatus" : null;
+  connect().catch((e) => { if (view) setText(view, e.shortMessage || e.message, true); else alert(e.message); });
+});
+
+/* ---------- history (this browser only) ---------- */
+function loadHistory() { try { return JSON.parse(localStorage.getItem("tessera_gifts") || "[]"); } catch (e) { return []; } }
+function saveHistory(item) { localStorage.setItem("tessera_gifts", JSON.stringify([item].concat(loadHistory()).slice(0, 10))); renderHistory(); }
+function renderHistory() {
+  const h = loadHistory();
+  $("historyBox").hidden = !h.length;
+  $("history").replaceChildren.apply($("history"), h.map((g) => {
+    const li = document.createElement("li"), a = document.createElement("a");
+    a.href = "/g/" + g.code;
+    a.textContent = "$" + fmtAmt(g.amount) + " · " + new Date(g.time).toLocaleDateString();
+    li.append(a);
+    return li;
+  }));
+}
+
+/* ---------- SEND ---------- */
+function makeCode() {
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  let s = "";
+  for (const b of bytes) s += ALPHABET[b % 32];
+  return "TSRA-" + s.slice(0, 4) + "-" + s.slice(4, 8) + "-" + s.slice(8, 12) + "-" + s.slice(12, 16);
+}
+const validAmount = (s) => AMOUNT_RE.test(s) && Number(s) >= 0.01;
+function setSteps(n) {
+  ["st1", "st2", "st3"].forEach((id, i) => { $(id).classList.toggle("done", i < n); $(id).classList.toggle("now", i === n); });
+}
+function updateFee() {
+  const s = $("amount").value.trim();
+  if (!cfg) { setText("feeLine", ""); return; }
+  if (!s) { setText("feeLine", "Network fee: " + nice(ethers.formatUnits(BigInt(cfg.relayerFee), 6)) + " USDC per gift."); return; }
+  if (!validAmount(s)) { setText("feeLine", "Enter an amount of at least 0.01 USDC."); return; }
+  const total = ethers.parseUnits(s, 6) + BigInt(cfg.relayerFee);
+  setText("feeLine", "You pay " + nice(ethers.formatUnits(total, 6)) + " USDC · They receive " + nice(s) + " USDC · valid for 30 days");
+}
+let prevTimer = null;
+function updatePreview() {
+  clearTimeout(prevTimer);
+  prevTimer = setTimeout(() => {
+    const s = $("amount").value.trim();
+    if (validAmount(s)) $("cardPrev").src = "/card.png?amount=" + encodeURIComponent(s);
+    const name = $("senderName").value.trim(), msg = $("message").value.trim();
+    $("prevMsg").textContent = msg ? "“" + msg + "”" + (name ? " — " + name : "") : "";
+  }, 250);
+}
+$("amount").addEventListener("input", (e) => {
+  let v = e.target.value.replace(/,/g, ".").replace(/[^0-9.]/g, "");
+  const i = v.indexOf(".");
+  if (i !== -1) v = v.slice(0, i + 1) + v.slice(i + 1).replace(/\./g, "").slice(0, 6);
+  e.target.value = v;
+  updateFee(); updatePreview();
+});
+["message", "senderName"].forEach((id) => $(id).addEventListener("input", updatePreview));
+
+function showResult(o) {
+  const link = location.origin + "/g/" + o.code;
+  const intro = "🎁 You've received a $" + fmtAmt(o.amount) + " USDC gift on Tessera!";
+  const enc = encodeURIComponent;
+  $("sendForm").hidden = true;
+  $("sendResult").hidden = false;
+  setSteps(1);
+  $("linkBox").textContent = link;
+  $("shWhatsapp").href = "https://wa.me/?text=" + enc(intro + " Claim it here: " + link);
+  $("shTelegram").href = "https://t.me/share/url?url=" + enc(link) + "&text=" + enc(intro);
+  $("shEmail").href = "mailto:?subject=" + enc("You've received a Tessera gift") + "&body=" + enc(intro + "\n\nClaim it here: " + link);
+  $("shX").onclick = async () => { await copy(link); window.open("https://x.com/messages", "_blank"); setText("resultStatus", "Link copied. Paste it into the X DM."); };
+  $("shMore").onclick = () => { if (navigator.share) navigator.share({ title: "Tessera gift", text: intro, url: link }).catch(() => {}); else copy(link).then(() => setText("resultStatus", "Link copied.")); };
+  $("shCopy").onclick = async () => { if (await copy(link)) setText("resultStatus", "Link copied ✓"); };
+  $("txLink").href = cfg.explorerBase + "tx/" + o.txHash;
+  window.scrollTo({ top: 0 });
+}
+
+async function onCreate() {
+  const btn = $("createBtn");
+  btn.disabled = true;
+  try {
+    const amountStr = $("amount").value.trim();
+    const message = $("message").value.trim();
+    const toEmail = $("toEmail").value.trim();
+    if (!validAmount(amountStr)) throw new Error("Enter an amount of at least 0.01 USDC.");
+    if (new TextEncoder().encode(message).length > 140) throw new Error("Message is too long (max 140 bytes).");
+    if (!signer) await connect();
+
+    const amount = ethers.parseUnits(amountStr, 6);
+    const total = amount + BigInt(cfg.relayerFee);
+    const usdc = new ethers.Contract(cfg.usdc, USDC_ABI, signer);
+    const tessera = new ethers.Contract(cfg.contract, TESSERA_ABI, signer);
+    if ((await usdc.balanceOf(account)) < total) throw new Error("Not enough USDC. You need " + nice(ethers.formatUnits(total, 6)) + ".");
+
+    if ((await usdc.allowance(account, cfg.contract)) < total) {
+      setText("sendStatus", "1/2 · Approve USDC in your wallet…");
+      await (await usdc.approve(cfg.contract, total)).wait();
+    }
+    const code = makeCode();
+    const codeHash = ethers.keccak256(ethers.toUtf8Bytes(code));
+    setText("sendStatus", "2/2 · Confirm the gift in your wallet…");
+    const tx = await tessera.createGift(codeHash, amount, message);
+    saveHistory({ code: code, amount: amountStr, time: Date.now() }); // saved right away so the code is never lost
+    setText("sendStatus", "Creating your gift on Arc…");
+    const receipt = await tx.wait();
+    setText("sendStatus", "");
+    showResult({ amount: amountStr, code: code, txHash: receipt.hash });
+
+    if (toEmail) {
+      setText("resultStatus", "Sending email…");
+      try {
+        await api("/api/email", { code: code, to: toEmail, senderName: $("senderName").value.trim() });
+        setText("resultStatus", "Email sent to " + toEmail + " ✓");
+      } catch (e) { setText("resultStatus", "Gift created, but the email failed: " + e.message, true); }
+    }
+  } catch (e) {
+    setText("sendStatus", e.shortMessage || e.message || "Something went wrong", true);
+  } finally {
+    btn.disabled = false;
+  }
+}
+$("createBtn").addEventListener("click", onCreate);
+$("againBtn").addEventListener("click", () => {
+  $("sendResult").hidden = true; $("sendForm").hidden = false; setSteps(0); setText("resultStatus", "");
+  $("amount").value = ""; $("message").value = ""; $("toEmail").value = ""; updateFee(); updatePreview();
+  window.scrollTo({ top: 0 });
+});
+
+/* ---------- CLAIM ---------- */
+function fmtCountdown(sec) {
+  if (sec <= 0) return "EXPIRED";
+  const d = Math.floor(sec / 86400), h = Math.floor(sec % 86400 / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+  const p = (n) => String(n).padStart(2, "0");
+  return (d > 0 ? d + "d " : "") + p(h) + ":" + p(m) + ":" + p(s);
+}
+function startCountdown(expiresAt) {
+  clearInterval(cdTimer);
+  const tick = () => { $("cd").textContent = fmtCountdown(expiresAt - Math.floor(Date.now() / 1000)); };
+  tick();
+  cdTimer = setInterval(tick, 1000);
+}
+async function startClaim(code) {
+  claimCode = (code || "").trim().toUpperCase();
+  clearInterval(cdTimer);
+  ["cdPill", "claimCard", "claimMsg", "claimBox", "receipt"].forEach((id) => { $(id).hidden = true; });
+  setText("claimStatus", "");
+  $("codeBox").hidden = !!claimCode && CODE_RE.test(claimCode);
+  if (!claimCode) return;
+  if (!CODE_RE.test(claimCode)) { setText("claimStatus", "That code doesn't look right. Codes look like TSRA-XXXX-XXXX-XXXX-XXXX.", true); return; }
+  setText("claimStatus", "Checking your gift…");
+  try {
+    const g = await api("/api/preview", { code: claimCode });
+    setText("claimStatus", "");
+    $("claimImg").src = "/card.png?amount=" + encodeURIComponent(g.amount);
+    $("claimCard").hidden = false;
+    if (g.message) { $("claimMsg").textContent = "“" + g.message + "”"; $("claimMsg").hidden = false; }
+    const expired = g.expiresAt <= Math.floor(Date.now() / 1000);
+    if (g.status === "active" && !expired) {
+      $("cdPill").hidden = false; startCountdown(g.expiresAt);
+      $("claimBox").hidden = false;
+    } else if (g.status === "redeemed") setText("claimStatus", "This gift has already been claimed.", true);
+    else if (g.status === "refunded") setText("claimStatus", "The sender took this gift back.", true);
+    else setText("claimStatus", "This gift has expired.", true);
+  } catch (e) {
+    $("codeBox").hidden = false;
+    setText("claimStatus", e.message, true);
+  }
+}
+$("checkBtn").addEventListener("click", () => {
+  const c = $("codeInput").value.trim().toUpperCase();
+  if (CODE_RE.test(c)) history.replaceState({}, "", "/g/" + c);
+  startClaim(c);
+});
+$("walletBtn").addEventListener("click", async () => {
+  try {
+    if (!window.ethereum) throw new Error("No wallet found. Paste your address instead.");
+    const accts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    $("addr").value = accts[0];
+  } catch (e) { setText("claimStatus", e.message, true); }
+});
+$("claimBtn").addEventListener("click", async () => {
+  const btn = $("claimBtn"), addr = $("addr").value.trim();
+  if (!ethers.isAddress(addr)) { setText("claimStatus", "Enter a valid wallet address (it starts with 0x).", true); return; }
+  btn.disabled = true;
+  setText("claimStatus", "Sending your gift…");
+  try {
+    const out = await api("/api/claim", { code: claimCode, recipient: addr });
+    clearInterval(cdTimer);
+    $("cdPill").hidden = true; $("claimBox").hidden = true;
+    $("claimMsg").textContent = "Claimed! $" + fmtAmt(out.amount) + " USDC is on its way to your wallet 🎉";
+    $("claimMsg").hidden = false;
+    $("rcptLink").href = out.explorer;
+    $("receipt").hidden = false;
+    setText("claimStatus", "");
+  } catch (e) {
+    setText("claimStatus", e.message, true);
+    btn.disabled = false;
+  }
+});
+
+/* ---------- start ---------- */
+(async function init() {
+  $("ghLink").href = GITHUB_URL;
+  renderHistory();
+  routeFromLocation();
+  try {
+    cfg = await (await fetch("/api/config")).json();
+    if (!cfg.contract) throw new Error("no config");
+    $("netName").textContent = cfg.chainName.toUpperCase();
+    $("contractLink").href = cfg.explorerBase + "address/" + cfg.contract;
+    updateFee();
+  } catch (e) {
+    setText("feeLine", "The server is not reachable right now. Please refresh in a moment.", true);
+  }
+})();
+</script>
+</body>
+</html>
