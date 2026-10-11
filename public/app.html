@@ -739,7 +739,7 @@ $("claimBtn").addEventListener("click", async () => {
     const out = await api("/api/claim", { code: claimCode, recipient: addr });
     clearInterval(cdTimer);
     $("cdPill").hidden = true; $("claimBox").hidden = true;
-    $("claimMsg").innerHTML = "Claimed! $" + fmtAmt(out.amount) + " USDC <img src='/brand/usdc.svg' alt='USDC' width='20' height='20' style='vertical-align: middle;'> is on its way to your wallet";
+    $("claimMsg").innerHTML = "Claimed! $" + fmtAmt(out.amount) + " USDC <img src='/brand/usdc.svg' alt='USDC' width='20' height='20' style='display:inline-block;vertical-align:middle;'> is on its way to your wallet";
     $("claimMsg").hidden = false;
     $("rcptLink").href = out.explorer;
     $("receipt").hidden = false;
