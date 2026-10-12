@@ -18,7 +18,7 @@ const EXPLORER_BASE =
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
 
 // Which website file to serve. Part 2 will change "app.html" to "site.html".
-const SITE_FILE = "app.html";
+const SITE_FILE = "site.html";
 // true = the link-preview picture shows the real code (same exposure as the link itself).
 const SHOW_CODE_IN_PREVIEW = true;
 
