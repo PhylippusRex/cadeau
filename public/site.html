@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESC}}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tessera">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESC}}">
+<meta property="og:url" content="{{URL}}">
+<meta property="og:image" content="{{IMAGE}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{TITLE}}">
+<meta name="twitter:description" content="{{DESC}}">
+<meta name="twitter:image" content="{{IMAGE}}">
+<link rel="icon" href="/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/brand/favicon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="nav">
+    <a class="logo" href="/" data-go="landing" aria-label="Tessera home"><img src="/brand/logo-standalone.svg" alt="Tessera"></a>
+    <nav class="navlinks">
+      <a href="/#how" data-go="landing" data-anchor="how">How it works</a>
+      <a href="/#card" data-go="landing" data-anchor="card">The card</a>
+      <a href="/#features" data-go="landing" data-anchor="features">Features</a>
+    </nav>
+    <div class="navright">
+      <span class="chip net"><i></i><span id="netName">ARC MAINNET</span></span>
+      <button class="btn btn-ink btn-sm" id="connectBtn" type="button">Connect wallet</button>
+      <div class="menuwrap">
+        <button class="menubtn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+        <div class="menu" id="menu" hidden>
+          <a href="/send" data-go="send"><i class="fa-solid fa-paper-plane"></i>Create</a>
+          <a href="/claim" data-go="claim"><i class="fa-solid fa-gift"></i>Claim</a>
+          <a href="/history" data-go="history" id="menuHistory" hidden><i class="fa-solid fa-clock-rotate-left"></i>History</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HOME -->
+<main class="view" id="view-landing">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">USDC gift cards on Arc</span>
+        <h1>Gift USDC<br>like a <em>gift card.</em></h1>
+        <p class="hero-sub">Create a code, share a link. They claim it from any wallet, with no gas and no setup.</p>
+        <div class="hero-cta">
+          <a class="btn btn-ink" href="/send" data-go="send">Send a gift →</a>
+          <a class="btn btn-outline" href="/claim" data-go="claim">Claim a gift</a>
+        </div>
+        <div class="hero-meta">
+          <span class="chip">0 gas for claimers</span>
+          <span class="chip">Single-use codes</span>
+          <span class="chip">Settled on Arc mainnet</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <span class="art-chip top">01 · Sender funds</span>
+        <img class="hero-card" src="/brand/card-sample.png" alt="Tessera USDC gift card" width="1200" height="744">
+        <span class="claim-chip"><i></i>Gas paid by Tessera</span>
+        <span class="art-chip bot">03 · Recipient claims</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="band"><div class="band-track">
+    <span>Single-use codes <b>◆</b> Gasless claims <b>◆</b> USDC on Arc <b>◆</b> 30-day refunds <b>◆</b> Settled on Arc mainnet <b>◆</b></span>
+    <span>Single-use codes <b>◆</b> Gasless claims <b>◆</b> USDC on Arc <b>◆</b> 30-day refunds <b>◆</b> Settled on Arc mainnet <b>◆</b></span>
+  </div></div>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">How it works</span>
+        <h2>Three steps. One gift.</h2>
+        <p>Fund a card, share the link, and they claim it. Arc escrow holds the USDC the whole way, and nothing moves until the right code is used.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="num">01 / FUND</span><h3>Create &amp; fund</h3><p>Choose an amount, add a message, and fund it with USDC on Arc. A unique code is made in your browser.</p></div>
+        <div class="step"><span class="num">02 / SHARE</span><h3>Share the link</h3><p>The USDC waits in escrow on Arc. Send the link by email, WhatsApp, Telegram or X.</p></div>
+        <div class="step"><span class="num">03 / CLAIM</span><h3>They claim it</h3><p>They paste any wallet address. Tessera pays the gas, and the code can never be used twice.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark" id="card">
+    <div class="wrap show-grid">
+      <div>
+        <span class="eyebrow">The card</span>
+        <h2 style="margin:16px 0 14px">A card they'll<br>actually screenshot.</h2>
+        <p>Dark card, lime mark, and the code written right on it. This sample keeps its code hidden.</p>
+        <ul class="show-list">
+          <li>Each card carries its own single-use code</li>
+          <li>Your message travels with the link and the email</li>
+          <li>One link, one claim, settled on Arc mainnet</li>
+        </ul>
+        <a class="btn btn-lime" href="/send" data-go="send">Create your first card</a>
+      </div>
+      <div>
+        <div class="flip" id="flip">
+          <div class="flip-inner">
+            <div class="face"><img src="/brand/card-sample.png" alt="Front of a Tessera gift card" width="1200" height="744"></div>
+            <div class="back face">
+              <span class="lbl">REDEEM ONCE · ON ARC</span>
+              <span class="code-big">TSRA-XXXX-XXXX-XXXX-XXXX</span>
+              <p>Unclaimed after 30 days? The sender can take the USDC back.</p>
+            </div>
+          </div>
+        </div>
+        <div class="flip-hint">Hover or tap to flip</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Features</span>
+        <h2>Everything a gift should be</h2>
+        <p>Small on purpose. One primitive, a claimable USDC voucher, done completely.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#17181C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5L16 9.5"/></svg></div>
+          <h3>Single-use codes</h3>
+          <p>Each link redeems exactly once. The state lives on Arc, so a screenshot or a second try can't claim it again.</p>
+        </div>
+        <div class="feat">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#17181C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
+          <h3>Gasless claims</h3>
+          <p>Recipients paste any address: MetaMask, Rabby, even a fresh wallet. The sender covers the small network fee up front.</p>
+        </div>
+        <div class="feat">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#17181C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Refund after 30 days</h3>
+          <p>If nobody claims the gift within 30 days, the sender can take the USDC back from the contract.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-sec"><div class="wrap stats">
+    <div class="stat"><b>0</b><span>gas for claimers</span></div>
+    <div class="stat"><b>1</b><span>claim per code</span></div>
+    <div class="stat"><b>30 days</b><span>before a refund</span></div>
+    <div class="stat"><b>Arc</b><span>mainnet settlement</span></div>
+  </div></div>
+
+  <section class="cta">
+    <div class="wrap inner">
+      <img src="/brand/logo-standalone.svg" alt="Tessera">
+      <h2>Send your first gift.</h2>
+      <p>It takes under a minute. Their side takes one tap and an address.</p>
+      <div class="row">
+        <a class="btn btn-lime" href="/send" data-go="send">Send a gift</a>
+        <a class="btn btn-ghost" href="/claim" data-go="claim">Claim a gift</a>
+      </div>
+    </div>
+  </section>
+
+  <footer><div class="wrap foot">
+    <a class="logo" href="/" data-go="landing" aria-label="Tessera home"><img src="/brand/logo-standalone.svg" alt="Tessera"></a>
+    <span class="small">Built on Arc · Powered by USDC · © 2026</span>
+    <nav><a href="#" id="ghLink" target="_blank" rel="noopener">GitHub</a><a href="#" id="contractLink" target="_blank" rel="noopener">Contract</a></nav>
+  </div></footer>
+</main>
+
+<!-- SEND -->
+<main class="view" id="view-send">
+  <section class="page"><div class="wrap send-grid">
+    <div>
+      <div class="panel" id="sendForm">
+        <span class="eyebrow">01 / Fund</span>
+        <h2>Send a gift</h2>
+        <p>You pay the amount plus a tiny network fee. They receive the exact amount.</p>
+        <div class="modes">
+          <button class="mode on" id="modeOne" type="button">Single gift</button>
+          <button class="mode" id="modeMany" type="button">Multiple gifts</button>
+        </div>
+        <div class="field"><label for="amount">Amount per gift (USDC)</label>
+          <div class="suffix"><input class="input amt" id="amount" inputmode="decimal" autocomplete="off" placeholder="50"><span class="u">USDC</span></div>
+        </div>
+        <div class="field"><label for="message">Message (optional)</label><input class="input" id="message" maxlength="140" placeholder="Happy birthday!"></div>
+        <div class="field"><label for="senderName">Your name (optional)</label><input class="input" id="senderName" maxlength="40" placeholder="Shown in the email"></div>
+        <div id="oneFields">
+          <div class="field"><label for="toEmail">Recipient email (optional)</label><input class="input" id="toEmail" type="email" placeholder="friend@example.com"></div>
+        </div>
+        <div id="manyFields" hidden>
+          <div class="field"><label for="emails">Recipient emails, one per line (optional)</label><textarea class="input" id="emails" rows="4" placeholder="a@example.com&#10;b@example.com"></textarea></div>
+          <div class="field"><label for="qty">Or how many codes? (used when the emails box is empty, max 20)</label><input class="input" id="qty" inputmode="numeric" autocomplete="off" placeholder="5"></div>
+        </div>
+        <p class="fee-line" id="feeLine"></p>
+        <button class="btn btn-lemon btn-full" id="createBtn" type="button">Create gift</button>
+        <p class="fine">Anyone with the link can claim it. Send it privately.</p>
+        <p class="status" id="sendStatus"></p>
+      </div>
+
+      <div class="panel" id="sendResult" hidden>
+        <span class="eyebrow">02 / Share</span>
+        <h2>Your gift is ready</h2>
+        <p>Send the link below. The first person to claim it gets the USDC.</p>
+        <div class="warn">Anyone with this link can claim the gift. Send it privately (DM or email) and never post it publicly.</div>
+        <div class="linkbox" id="linkBox"></div>
+        <div class="share" id="shareBar"></div>
+        <div class="result-actions">
+          <a id="txLink" href="#" target="_blank" rel="noopener">View transaction ↗</a>
+          <button class="btn btn-outline btn-sm" id="againBtn" type="button">Create another</button>
+        </div>
+        <p class="status" id="resultStatus"></p>
+      </div>
+
+      <div class="panel" id="bulkResult" hidden>
+        <span class="eyebrow">02 / Share</span>
+        <h2>Your gifts are ready</h2>
+        <p>Each code works once. Share each link privately.</p>
+        <ul class="hlist" id="bulkList" style="margin-top:18px"></ul>
+        <div class="bulk-actions">
+          <button class="btn btn-outline btn-sm" id="bulkCopyAll" type="button">Copy all links</button>
+          <button class="btn btn-outline btn-sm" id="bulkCsv" type="button">Download CSV</button>
+          <button class="btn btn-ink btn-sm" id="bulkAgain" type="button">Create more</button>
+        </div>
+        <p class="status" id="bulkStatus"></p>
+      </div>
+    </div>
+
+    <div>
+      <div class="preview-wrap">
+        <img id="cardPrev" src="/brand/card-sample.png" alt="Gift card preview" width="1200" height="744">
+        <div class="prev-cap" id="prevCap">Preview · updates as you type</div>
+        <div class="prev-msg" id="prevMsg"></div>
+      </div>
+      <div class="stepper">
+        <h4>Where your gift is</h4>
+        <div class="st now" id="st1"><i></i><div><b>Fund</b><span>You fund the card with USDC on Arc.</span></div></div>
+        <div class="st" id="st2"><i></i><div><b>Share</b><span>Escrow holds it while the link travels.</span></div></div>
+        <div class="st" id="st3"><i></i><div><b>Claim</b><span>They claim to any address. The gas is covered.</span></div></div>
+      </div>
+    </div>
+  </div></section>
+</main>
+
+<!-- CLAIM -->
+<main class="view" id="view-claim">
+  <section class="page"><div class="wrap claim-col">
+    <div id="codeBox" hidden>
+      <h1>Claim your gift</h1>
+      <div class="field"><label for="codeInput">Gift code</label><input class="input addr" id="codeInput" placeholder="TSRA-XXXX-XXXX-XXXX-XXXX" autocapitalize="characters" autocomplete="off"></div>
+      <button class="btn btn-ink btn-full" id="checkBtn" type="button" style="margin-top:16px">Check code</button>
+    </div>
+    <div class="cd" id="cdPill" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8DB2F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>EXPIRES IN <b id="cd">--</b></div>
+    <div class="claim-card" id="claimCard" hidden><img id="claimImg" src="/brand/card-sample.png" alt="Your Tessera gift card" width="1200" height="744"></div>
+    <div class="claim-msg" id="claimMsg" hidden></div>
+    <div id="claimBox" hidden>
+      <div class="field" style="margin-top:0"><label for="addr">Where should we send it?</label><input class="input addr" id="addr" placeholder="0x…" autocapitalize="off" autocomplete="off" spellcheck="false"></div>
+      <div class="addr-row" style="margin-top:8px"><button id="walletBtn" type="button">Use my wallet</button></div>
+      <button class="btn btn-ink btn-full" id="claimBtn" type="button" style="margin-top:14px">Claim gift</button>
+      <p class="fine">No gas needed. It's covered.</p>
+    </div>
+    <p class="status" id="claimStatus"></p>
+    <div class="receipt" id="receipt" hidden>
+      <span class="mono">TX <a id="rcptLink" href="#" target="_blank" rel="noopener">view on Arc ↗</a></span>
+      <span class="ok"><i></i>Confirmed · code used</span>
+    </div>
+    <div class="helper">
+      <h4>Don't have a wallet?</h4>
+      <ol><li>Install a wallet app (MetaMask or Rabby).</li><li>Create a wallet and copy your address (it starts with 0x).</li><li>Paste it above and tap Claim. Your USDC arrives on Arc.</li></ol>
+    </div>
+  </div></section>
+</main>
+
+<!-- HISTORY -->
+<main class="view" id="view-history">
+  <section class="page"><div class="wrap claim-col">
+    <h1>History</h1>
+    <p class="fine" style="margin-top:0">Gifts created with the connected wallet, saved in this browser.</p>
+    <div id="histNeed"><button class="btn btn-ink btn-full" id="histConnect" type="button">Connect wallet</button></div>
+    <p class="fine" id="histEmpty" hidden>No gifts yet for this wallet.</p>
+    <ul class="hlist" id="histList"></ul>
+    <h3 class="sub-h" id="legacyTitle" hidden>Earlier gifts on this device</h3>
+    <ul class="hlist" id="legacyList"></ul>
+    <p class="status" id="histStatus"></p>
+  </div></section>
+</main>
+
+<!-- FIXED BOTTOM BAR (phones and tablets) -->
+<nav class="bottomnav" aria-label="Main">
+  <a href="/" data-go="landing" data-tab="landing"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>HOME</a>
+  <a href="/send" data-go="send" data-tab="send"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>SEND</a>
+  <a href="/claim" data-go="claim" data-tab="claim"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>CLAIM</a>
+</nav>
+
+<script src="/vendor/ethers.umd.min.js"></script>
+<script src="/site.js"></script>
+</body>
+</html>
