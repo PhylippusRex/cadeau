@@ -4,6 +4,7 @@ const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
 const { ethers } = require("ethers");
+const { Resvg } = require("@resvg/resvg-js");
 const brand = require("./brand");
 const { esc, sendGiftEmail } = require("./email");
 
@@ -16,6 +17,11 @@ const EXPLORER_BASE =
   process.env.EXPLORER_BASE || (IS_MAIN ? "https://explorer.arc.io/" : "https://explorer.testnet.arc.io/");
 const PUBLIC_DIR = path.join(__dirname, "..", "public");
 
+// Which website file to serve. Part 2 will change "app.html" to "site.html".
+const SITE_FILE = "app.html";
+// true = the link-preview picture shows the real code (same exposure as the link itself).
+const SHOW_CODE_IN_PREVIEW = true;
+
 const dep = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "deployments", `${NETWORK}.json`)));
 const provider = new ethers.JsonRpcProvider(RPC, dep.chainId, { staticNetwork: true, batchMaxCount: 1 });
 const wallet = new ethers.Wallet(process.env.RELAYER_PRIVATE_KEY, provider);
@@ -24,6 +30,7 @@ const tessera = new ethers.Contract(dep.address, dep.abi, wallet);
 const CODE_RE = /^TSRA(-[A-HJ-NP-Z2-9]{4}){4}$/;
 const AMOUNT_RE = /^\d{1,9}(\.\d{1,6})?$/;
 const STATUS = ["none", "active", "redeemed", "refunded"];
+const MASK = "TSRA-XXXX-XXXX-XXXX-XXXX";
 const baseUrl = (req) =>
   (process.env.BASE_URL || `${req.protocol}://${req.get("host")}`).replace(/\/$/, "");
 
@@ -32,13 +39,15 @@ app.set("trust proxy", 1);
 app.use(cors());
 app.use(express.json());
 
+// Rate limit per IP, with a separate counter for each kind of request
 const hits = new Map();
-function limited(ip) {
+function limited(ip, max = 15, bucket = "general") {
+  const key = bucket + ":" + ip;
   const now = Date.now();
-  const arr = (hits.get(ip) || []).filter((t) => now - t < 60000);
+  const arr = (hits.get(key) || []).filter((t) => now - t < 60000);
   arr.push(now);
-  hits.set(ip, arr);
-  return arr.length > 15;
+  hits.set(key, arr);
+  return arr.length > max;
 }
 function readCode(body) {
   const code = String((body && body.code) || "").trim().toUpperCase();
@@ -77,7 +86,7 @@ app.get("/api/config", async (_req, res) => {
 });
 
 app.post("/api/preview", async (req, res) => {
-  if (limited(req.ip)) return res.status(429).json({ error: "Too many requests" });
+  if (limited(req.ip, 60, "preview")) return res.status(429).json({ error: "Too many requests" });
   const code = readCode(req.body);
   if (!code) return res.status(400).json({ error: "Invalid code format" });
   try {
@@ -95,7 +104,7 @@ app.post("/api/claim", (req, res) => {
 });
 async function handleClaim(req, res) {
   try {
-    if (limited(req.ip)) return res.status(429).json({ error: "Too many requests" });
+    if (limited(req.ip, 15, "claim")) return res.status(429).json({ error: "Too many requests" });
     const code = readCode(req.body);
     if (!code) return res.status(400).json({ error: "Invalid code format" });
     const recipient = String(req.body.recipient || "").trim();
@@ -115,7 +124,7 @@ async function handleClaim(req, res) {
 
 const emailCount = new Map();
 app.post("/api/email", async (req, res) => {
-  if (limited(req.ip)) return res.status(429).json({ error: "Too many requests" });
+  if (limited(req.ip, 40, "email")) return res.status(429).json({ error: "Too many requests" });
   const code = readCode(req.body);
   if (!code) return res.status(400).json({ error: "Invalid code format" });
   const to = String(req.body.to || "").trim();
@@ -136,7 +145,28 @@ app.post("/api/email", async (req, res) => {
   }
 });
 
-// ---------- Pictures: gift card + link preview (the code is always masked) ----------
+// ---------- Pictures: gift card + link preview ----------
+// Fonts: Manrope if the files are in server/fonts, otherwise the old Barlow look.
+const FONT_DIR = path.join(__dirname, "fonts");
+const MANROPE_FILES = ["Manrope-Regular.ttf", "Manrope-Medium.ttf", "Manrope-Bold.ttf"].map((f) => path.join(FONT_DIR, f));
+const HAS_MANROPE = MANROPE_FILES.every((f) => fs.existsSync(f));
+function renderPng(svg, width) {
+  if (!HAS_MANROPE) return brand.png(svg, width);
+  const styled = svg
+    .replace(/font-family="Barlow( Semi Condensed)?"/g, 'font-family="Manrope"')
+    .replace("scale(1.08 1)", "scale(1 1)")
+    .replace('font-size="36.5"', 'font-size="32"');
+  return new Resvg(styled, {
+    font: { fontFiles: MANROPE_FILES, loadSystemFonts: false },
+    fitTo: { mode: "width", value: width },
+  }).render().asPng();
+}
+const withCode = (svg, code) => (code ? svg.replace(MASK, code) : svg);
+const cleanCode = (q) => {
+  const c = String(q || "").trim().toUpperCase();
+  return CODE_RE.test(c) ? c : "";
+};
+
 const imgCache = new Map();
 function cachedPng(key, make) {
   if (!imgCache.has(key)) {
@@ -145,8 +175,8 @@ function cachedPng(key, make) {
   }
   return imgCache.get(key);
 }
-function sendPng(res, buf) {
-  res.set({ "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" });
+function sendPng(res, buf, isPrivate) {
+  res.set({ "Content-Type": "image/png", "Cache-Control": isPrivate ? "private, no-store" : "public, max-age=86400" });
   res.send(buf);
 }
 const goodAmount = (a) => AMOUNT_RE.test(a) && Number(a) > 0;
@@ -154,20 +184,24 @@ const goodAmount = (a) => AMOUNT_RE.test(a) && Number(a) > 0;
 app.get("/card.png", (req, res) => {
   const a = String(req.query.amount || "");
   if (!goodAmount(a)) return res.status(400).json({ error: "Invalid amount" });
-  sendPng(res, cachedPng("card:" + a, () => brand.png(brand.cardSvg(a), 1200)));
+  const code = cleanCode(req.query.code);
+  if (code) return sendPng(res, renderPng(withCode(brand.cardSvg(a), code), 1200), true);
+  sendPng(res, cachedPng("card:" + a, () => renderPng(brand.cardSvg(a), 1200)));
 });
 app.get("/og.png", (req, res) => {
   const a = String(req.query.amount || "");
-  if (!a) return sendPng(res, cachedPng("og:default", () => brand.png(brand.ogDefaultSvg(), 1200)));
+  if (!a) return sendPng(res, cachedPng("og:default", () => renderPng(brand.ogDefaultSvg(), 1200)));
   if (!goodAmount(a)) return res.status(400).json({ error: "Invalid amount" });
-  sendPng(res, cachedPng("og:" + a, () => brand.png(brand.ogSvg(a), 1200)));
+  const code = cleanCode(req.query.code);
+  if (code) return sendPng(res, renderPng(withCode(brand.ogSvg(a), code), 1200), true);
+  sendPng(res, cachedPng("og:" + a, () => renderPng(brand.ogSvg(a), 1200)));
 });
 
-// ---------- Website (one page file: public/app.html) ----------
+// ---------- Website (one page file in public/) ----------
 const fill = (tpl, v) => tpl.replace(/{{(\w+)}}/g, (_, k) => esc(v[k] ?? ""));
-const appFile = path.join(PUBLIC_DIR, "app.html");
-app.get(["/", "/send", "/claim", "/g/:code"], async (req, res) => {
-  if (!fs.existsSync(appFile)) return res.status(404).send("Website file (public/app.html) is not installed yet.");
+const appFile = path.join(PUBLIC_DIR, SITE_FILE);
+app.get(["/", "/send", "/claim", "/history", "/g/:code"], async (req, res) => {
+  if (!fs.existsSync(appFile)) return res.status(404).send(`Website file (public/${SITE_FILE}) is not installed yet.`);
   const base = baseUrl(req);
   let title = "Tessera: gift USDC like a gift card";
   let desc = "Create a single-use USDC gift code on Arc and share it as a link. They claim it with any wallet, no gas needed.";
@@ -180,7 +214,7 @@ app.get(["/", "/send", "/claim", "/g/:code"], async (req, res) => {
       const g = await lookup(code);
       if (g.status === "active") {
         title = `You've received a $${brand.fmtCardAmount(g.amount)} USDC gift`;
-        image = `${base}/og.png?amount=${g.amount}`;
+        image = `${base}/og.png?amount=${g.amount}` + (SHOW_CODE_IN_PREVIEW ? `&code=${code}` : "");
       }
     } catch (e) {}
   }
@@ -191,4 +225,4 @@ app.use("/fonts", express.static(path.join(__dirname, "fonts"), { maxAge: "30d" 
 app.use(express.static(PUBLIC_DIR, { index: false }));
 
 app.listen(process.env.PORT || 3001, () =>
-  console.log(`Tessera running on :${process.env.PORT || 3001} (${NETWORK})`));
+  console.log(`Tessera running on :${process.env.PORT || 3001} (${NETWORK}) fonts:${HAS_MANROPE ? "Manrope" : "Barlow"}`));
