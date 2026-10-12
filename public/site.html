@@ -181,28 +181,28 @@
   <section class="page"><div class="wrap send-grid">
     <div>
       <div class="panel" id="sendForm">
-        <span class="eyebrow">01 / Fund</span>
-        <h2>Send a gift</h2>
+        <span class="eyebrow">01 / Create</span>
+        <h2>Create a gift card</h2>
         <p>You pay the amount plus a tiny network fee. They receive the exact amount.</p>
         <div class="modes">
           <button class="mode on" id="modeOne" type="button">Single gift</button>
           <button class="mode" id="modeMany" type="button">Multiple gifts</button>
         </div>
-        <div class="field"><label for="amount">Amount per gift (USDC)</label>
-          <div class="suffix"><input class="input amt" id="amount" inputmode="decimal" autocomplete="off" placeholder="50"><span class="u">USDC</span></div>
+        <div class="field"><label for="amount">Amount (USDC)</label>
+          <div class="suffix"><input class="input amt" id="amount" inputmode="decimal" autocomplete="off" placeholder="10"><span class="u">USDC</span></div>
         </div>
-        <div class="field"><label for="message">Message (optional)</label><input class="input" id="message" maxlength="140" placeholder="Happy birthday!"></div>
-        <div class="field"><label for="senderName">Your name (optional)</label><input class="input" id="senderName" maxlength="40" placeholder="Shown in the email"></div>
+        <div class="field"><label for="message">Write a custom message (optional)</label><input class="input" id="message" maxlength="140" placeholder="...."></div>
+        <div class="field"><label for="senderName">Sender's name (optional)</label><input class="input" id="senderName" maxlength="40" placeholder="Shown in the email"></div>
         <div id="oneFields">
           <div class="field"><label for="toEmail">Recipient email (optional)</label><input class="input" id="toEmail" type="email" placeholder="friend@example.com"></div>
         </div>
         <div id="manyFields" hidden>
-          <div class="field"><label for="emails">Recipient emails, one per line (optional)</label><textarea class="input" id="emails" rows="4" placeholder="a@example.com&#10;b@example.com"></textarea></div>
-          <div class="field"><label for="qty">Or how many codes? (used when the emails box is empty, max 20)</label><input class="input" id="qty" inputmode="numeric" autocomplete="off" placeholder="5"></div>
+          <div class="field"><label for="emails">Recipient emails. One per line (optional)</label><textarea class="input" id="emails" rows="4" placeholder="friend@example.com&#10;enemy@example.com"></textarea></div>
+          <div class="field"><label for="qty">OR How many codes? (used when the emails box is empty. Max 20)</label><input class="input" id="qty" inputmode="numeric" autocomplete="off" placeholder="5"></div>
         </div>
         <p class="fee-line" id="feeLine"></p>
-        <button class="btn btn-lemon btn-full" id="createBtn" type="button">Create gift</button>
-        <p class="fine">Anyone with the link can claim it. Send it privately.</p>
+        <button class="btn btn-lemon btn-full" id="createBtn" type="button">Create code</button>
+        <p class="fine">Anyone with the link can claim it. Share it privately.</p>
         <p class="status" id="sendStatus"></p>
       </div>
 
@@ -237,14 +237,14 @@
     <div>
       <div class="preview-wrap">
         <img id="cardPrev" src="/brand/card-sample.png" alt="Gift card preview" width="1200" height="744">
-        <div class="prev-cap" id="prevCap">Preview · updates as you type</div>
+        <div class="prev-cap" id="prevCap">Preview</div>
         <div class="prev-msg" id="prevMsg"></div>
       </div>
       <div class="stepper">
-        <h4>Where your gift is</h4>
+        <h4>Gifting process</h4>
         <div class="st now" id="st1"><i></i><div><b>Fund</b><span>You fund the card with USDC on Arc.</span></div></div>
         <div class="st" id="st2"><i></i><div><b>Share</b><span>Escrow holds it while the link travels.</span></div></div>
-        <div class="st" id="st3"><i></i><div><b>Claim</b><span>They claim to any address. The gas is covered.</span></div></div>
+        <div class="st" id="st3"><i></i><div><b>Claim</b><span>Receiver claim to any address. The gas is covered.</span></div></div>
       </div>
     </div>
   </div></section>
@@ -262,15 +262,15 @@
     <div class="claim-card" id="claimCard" hidden><img id="claimImg" src="/brand/card-sample.png" alt="Your Tessera gift card" width="1200" height="744"></div>
     <div class="claim-msg" id="claimMsg" hidden></div>
     <div id="claimBox" hidden>
-      <div class="field" style="margin-top:0"><label for="addr">Where should we send it?</label><input class="input addr" id="addr" placeholder="0x…" autocapitalize="off" autocomplete="off" spellcheck="false"></div>
+      <div class="field" style="margin-top:0"><label for="addr">Enter address</label><input class="input addr" id="addr" placeholder="0x…" autocapitalize="off" autocomplete="off" spellcheck="false"></div>
       <div class="addr-row" style="margin-top:8px"><button id="walletBtn" type="button">Use my wallet</button></div>
       <button class="btn btn-ink btn-full" id="claimBtn" type="button" style="margin-top:14px">Claim gift</button>
       <p class="fine">No gas needed. It's covered.</p>
     </div>
     <p class="status" id="claimStatus"></p>
     <div class="receipt" id="receipt" hidden>
-      <span class="mono">TX <a id="rcptLink" href="#" target="_blank" rel="noopener">view on Arc ↗</a></span>
-      <span class="ok"><i></i>Confirmed · code used</span>
+      <span class="mono">TX <a id="rcptLink" href="#" target="_blank" rel="noopener">view on Blockscout ↗</a></span>
+      <span class="ok"><i></i>Confirmed · code redeemed</span>
     </div>
     <div class="helper">
       <h4>Don't have a wallet?</h4>
