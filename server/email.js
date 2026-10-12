@@ -5,10 +5,13 @@ const esc = (s) =>
 
 function giftEmailHtml({ amount, message, link, code, senderName, baseUrl }) {
   const amt = fmtCardAmount(amount);
+  const b = esc(baseUrl);
   const headline = senderName ? `${esc(senderName)} sent you a gift` : "You've received a gift";
-  const cardUrl = `${baseUrl}/card.png?amount=${encodeURIComponent(amount)}`;
+  const cardUrl = `${baseUrl}/card.png?amount=${encodeURIComponent(amount)}&code=${encodeURIComponent(code)}`;
   return `<!doctype html>
-<html><body style="margin:0;padding:0;background:#f4f2ec;font-family:Arial,Helvetica,sans-serif;color:#17181c;">
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f4f2ec;font-family:Arial,Helvetica,sans-serif;color:#17181c;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(amt)} USDC is waiting for you. Tap to claim it.</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f2ec;padding:24px 12px;">
 <tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:20px;">
@@ -17,13 +20,13 @@ function giftEmailHtml({ amount, message, link, code, senderName, baseUrl }) {
     <div style="font-size:15px;color:#5c5e66;margin-top:8px;">Here is your Tessera USDC gift card.</div>
   </td></tr>
   <tr><td style="padding:16px 28px;text-align:center;">
-    <img src="${esc(cardUrl)}" width="504" alt="$${esc(amt)} USDC gift card" style="display:block;width:100%;max-width:504px;height:auto;border-radius:16px;margin:0 auto;">
+    <img src="${esc(cardUrl)}" width="504" alt="${esc(amt)} USDC gift card" style="display:block;width:100%;max-width:504px;height:auto;border-radius:16px;margin:0 auto;">
   </td></tr>
   ${message ? `<tr><td style="padding:4px 28px 8px 28px;"><div style="border-left:4px solid #cfde24;background:#f4f2ec;padding:12px 16px;font-size:15px;font-style:italic;color:#17181c;">“${esc(message)}”</div></td></tr>` : ""}
   <tr><td style="padding:16px 28px;text-align:center;">
     <a href="${esc(link)}" style="display:inline-block;background:#cfde24;color:#17181c;text-decoration:none;font-weight:bold;font-size:16px;padding:16px 40px;border-radius:999px;border:1.5px solid #17181c;">Claim your gift</a>
   </td></tr>
-  <tr><td style="padding:8px 28px 4px 28px;text-align:center;font-size:13px;color:#5c5e66;">Or go to ${esc(baseUrl)}/claim and enter this code:</td></tr>
+  <tr><td style="padding:8px 28px 4px 28px;text-align:center;font-size:13px;color:#5c5e66;">Or go to ${b}/claim and enter this code:</td></tr>
   <tr><td style="padding:6px 28px 20px 28px;text-align:center;">
     <span style="display:inline-block;background:#f4f2ec;border-radius:10px;padding:10px 16px;font-family:'Courier New',monospace;font-size:18px;letter-spacing:1px;font-weight:bold;">${esc(code)}</span>
   </td></tr>
@@ -31,7 +34,7 @@ function giftEmailHtml({ amount, message, link, code, senderName, baseUrl }) {
     1. Tap <b>Claim your gift</b> &nbsp;2. Paste a wallet address that can receive USDC on Arc &nbsp;3. Done. Tessera pays the gas.
   </td></tr>
   <tr><td style="border-top:1px solid #e5e3dc;padding:20px 28px;text-align:center;">
-    <img src="${esc(baseUrl)}/brand/logo-header.png" width="150" alt="Tessera" style="display:inline-block;height:auto;">
+    <img src="${b}/brand/logo-standalone.png" width="72" alt="Tessera" style="display:inline-block;height:auto;border:0;">
     <div style="font-size:12px;color:#8a8c94;margin-top:12px;line-height:1.5;">Single-use gift. Anyone with this link can claim it, so keep it private.</div>
   </td></tr>
 </table></td></tr></table></body></html>`;
@@ -40,16 +43,22 @@ function giftEmailHtml({ amount, message, link, code, senderName, baseUrl }) {
 async function sendGiftEmail({ to, amount, message, link, code, senderName, baseUrl }) {
   if (!process.env.RESEND_API_KEY) throw new Error("RESEND_API_KEY missing");
   const amt = fmtCardAmount(amount);
+  const payload = {
+    from: process.env.EMAIL_FROM,
+    to: [to],
+    subject: senderName ? `${senderName} sent you a ${amt} USDC gift` : `You received a ${amt} USDC gift`,
+    html: giftEmailHtml({ amount, message, link, code, senderName, baseUrl }),
+    text:
+      `${senderName ? senderName + " sent you" : "You've received"} a ${amt} USDC gift on Tessera.\n\n` +
+      (message ? `Message: ${message}\n\n` : "") +
+      `Claim it: ${link}\nOr go to ${baseUrl}/claim and enter this code: ${code}\n\n` +
+      `This is a single-use gift. Anyone with the link can claim it, so keep it private.`,
+  };
+  if (process.env.EMAIL_REPLY_TO) payload.reply_to = process.env.EMAIL_REPLY_TO;
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from: process.env.EMAIL_FROM,
-      to: [to],
-      subject: senderName ? `${senderName} sent you a $${amt} USDC gift` : `You received a $${amt} USDC gift`,
-      html: giftEmailHtml({ amount, message, link, code, senderName, baseUrl }),
-      text: `You've received a $${amt} USDC gift.\nClaim: ${link}\nCode: ${code}`,
-    }),
+    body: JSON.stringify(payload),
   });
   if (!res.ok) throw new Error(`Resend error: ${await res.text()}`);
 }
