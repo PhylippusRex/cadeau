@@ -224,5 +224,6 @@ app.get(["/", "/send", "/claim", "/history", "/g/:code"], async (req, res) => {
 app.use("/fonts", express.static(path.join(__dirname, "fonts"), { maxAge: "30d" }));
 app.use(express.static(PUBLIC_DIR, { index: false }));
 
-app.listen(process.env.PORT || 3001, () =>
+   if (require.main === module) app.listen(process.env.PORT || 3001, () =>
   console.log(`Cadeau running on :${process.env.PORT || 3001} (${NETWORK}) fonts:${HAS_MANROPE ? "Manrope" : "Barlow"}`));
+   module.exports = app;
