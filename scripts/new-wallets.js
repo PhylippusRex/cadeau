@@ -14,7 +14,7 @@ fs.writeFileSync(".env", [
   "PORT=3001",
   "BASE_URL=http://localhost:3001",
   "RESEND_API_KEY=",
-  'EMAIL_FROM="Tessera <onboarding@resend.dev>"',
+  'EMAIL_FROM="Cadeau <onboarding@resend.dev>"',
 ].join("\n") + "\n");
 console.log("Deployer (also your sender wallet):", d.address);
 console.log("Relayer:", r.address);
