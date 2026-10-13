@@ -1,4 +1,4 @@
-// Tessera brand assets (traced from the design files) + SVG/PNG generators.
+// Cadeau brand assets (traced from the design files) + SVG/PNG generators.
 const path = require("path");
 const { Resvg } = require("@resvg/resvg-js");
 
