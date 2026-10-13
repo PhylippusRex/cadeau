@@ -1,12 +1,12 @@
 "use strict";
-const GITHUB_URL = "https://github.com/PhylippusRex/tessera";
+const GITHUB_URL = "https://github.com/PhylippusRex/cadeau";
 const $ = (id) => document.getElementById(id);
-const CODE_RE = /^TSRA(-[A-HJ-NP-Z2-9]{4}){4}$/;
+const CODE_RE = /^CDEU(-[A-HJ-NP-Z2-9]{4}){4}$/;
 const AMOUNT_RE = /^\d{1,9}(\.\d{1,6})?$/;
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const MAX_BULK = 20;
-const TESSERA_ABI = ["function createGift(bytes32 codeHash, uint256 amount, string message)"];
+const CADEAU_ABI = ["function createGift(bytes32 codeHash, uint256 amount, string message)"];
 const USDC_ABI = [
   "function approve(address,uint256) returns (bool)",
   "function allowance(address,address) view returns (uint256)",
@@ -34,7 +34,7 @@ function makeCode() {
   const bytes = crypto.getRandomValues(new Uint8Array(16));
   let s = "";
   for (const b of bytes) s += ALPHABET[b % 32];
-  return "TSRA-" + s.slice(0, 4) + "-" + s.slice(4, 8) + "-" + s.slice(8, 12) + "-" + s.slice(12, 16);
+  return "CDEU-" + s.slice(0, 4) + "-" + s.slice(4, 8) + "-" + s.slice(8, 12) + "-" + s.slice(12, 16);
 }
 const validAmount = (s) => AMOUNT_RE.test(s) && Number(s) >= 0.01;
 function miniBtn(text, fn) {
@@ -234,7 +234,7 @@ $("modeMany").addEventListener("click", () => setMode("many"));
 
 /* six icon-only share buttons */
 function buildShare(link, code, amount) {
-  const intro = "You've received a $" + fmtAmt(amount) + " USDC gift on Tessera!";
+  const intro = "You've received a $" + fmtAmt(amount) + " USDC gift on Cadeau!";
   const enc = encodeURIComponent, bar = $("shareBar");
   bar.replaceChildren();
   const add = (cls, label, icon, href, fn) => {
@@ -291,7 +291,7 @@ async function onCreate() {
     const amount = ethers.parseUnits(amountStr, 6);
     const total = amount + BigInt(cfg.relayerFee);
     const usdc = new ethers.Contract(cfg.usdc, USDC_ABI, signer);
-    const tessera = new ethers.Contract(cfg.contract, TESSERA_ABI, signer);
+    const cadeau = new ethers.Contract(cfg.contract, CADEAU_ABI, signer);
     if ((await usdc.balanceOf(account)) < total) throw new Error("Not enough USDC. You need " + nice(ethers.formatUnits(total, 6)) + ".");
     if ((await usdc.allowance(account, cfg.contract)) < total) {
       setText("sendStatus", "1/2 · Approve USDC in your wallet…");
@@ -300,7 +300,7 @@ async function onCreate() {
     const code = makeCode();
     const codeHash = ethers.keccak256(ethers.toUtf8Bytes(code));
     setText("sendStatus", "2/2 · Confirm the gift in your wallet…");
-    const tx = await tessera.createGift(codeHash, amount, message);
+    const tx = await cadeau.createGift(codeHash, amount, message);
     saveGift({ code: code, amount: amountStr, message: message, time: Date.now() }); // saved right away so the code is never lost
     setText("sendStatus", "Creating your gift on Arc…");
     const receipt = await tx.wait();
@@ -363,7 +363,7 @@ async function onBulk() {
     const amount = ethers.parseUnits(amountStr, 6);
     const total = (amount + BigInt(cfg.relayerFee)) * BigInt(count);
     const usdc = new ethers.Contract(cfg.usdc, USDC_ABI, signer);
-    const tessera = new ethers.Contract(cfg.contract, TESSERA_ABI, signer);
+    const cadeau = new ethers.Contract(cfg.contract, CADEAU_ABI, signer);
     if ((await usdc.balanceOf(account)) < total) throw new Error("Not enough USDC. You need " + nice(ethers.formatUnits(total, 6)) + ".");
     if ((await usdc.allowance(account, cfg.contract)) < total) {
       setText("sendStatus", "Approve USDC in your wallet (one time for all gifts)…");
@@ -374,7 +374,7 @@ async function onBulk() {
       const codeHash = ethers.keccak256(ethers.toUtf8Bytes(code));
       setText("sendStatus", "Gift " + (i + 1) + " of " + count + ": confirm in your wallet…");
       let tx;
-      try { tx = await tessera.createGift(codeHash, amount, message); }
+      try { tx = await cadeau.createGift(codeHash, amount, message); }
       catch (e) { note = "Stopped at gift " + (i + 1) + ": " + (e.shortMessage || e.message); break; }
       saveGift({ code: code, amount: amountStr, message: message, time: Date.now() });
       const row = { code: code, email: parsed.good[i] || "", emailStatus: "" };
@@ -438,7 +438,7 @@ async function startClaim(code) {
   setText("claimStatus", "");
   $("codeBox").hidden = !!claimCode && CODE_RE.test(claimCode);
   if (!claimCode) return;
-  if (!CODE_RE.test(claimCode)) { setText("claimStatus", "That code doesn't look right. Codes look like TSRA-XXXX-XXXX-XXXX-XXXX.", true); return; }
+  if (!CODE_RE.test(claimCode)) { setText("claimStatus", "That code doesn't look right. Codes look like CDEU-XXXX-XXXX-XXXX-XXXX.", true); return; }
   setText("claimStatus", "Checking your gift…");
   try {
     const g = await api("/api/preview", { code: claimCode });
