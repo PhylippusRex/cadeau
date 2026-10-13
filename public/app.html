@@ -6,7 +6,7 @@
 <title>{{TITLE}}</title>
 <meta name="description" content="{{DESC}}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Tessera">
+<meta property="og:site_name" content="Cadeau">
 <meta property="og:title" content="{{TITLE}}">
 <meta property="og:description" content="{{DESC}}">
 <meta property="og:url" content="{{URL}}">
@@ -25,7 +25,7 @@
 @font-face{font-family:'Barlow Semi Condensed';font-weight:400;font-display:swap;src:url(/fonts/BarlowSemiCondensed-Regular.ttf) format('truetype')}
 @font-face{font-family:'Barlow Semi Condensed';font-weight:700;font-display:swap;src:url(/fonts/BarlowSemiCondensed-Bold.ttf) format('truetype')}
 
-/* ============ TOKENS (colors from the Tessera.html mockup) ============ */
+/* ============ TOKENS (colors from the Cadeau.html mockup) ============ */
 :root{
   --lime:#C8DB2F; --lime-dk:#A9BC1C;
   --ink:#17181C; --ink-2:#232428; --ink-3:#2E2F34;
@@ -244,7 +244,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
 <!-- ============ HEADER ============ -->
 <header>
   <div class="nav">
-    <a class="logo" href="/" data-go="landing" aria-label="Tessera home"><img src="/brand/logo-header.svg" alt="Tessera"></a>
+    <a class="logo" href="/" data-go="landing" aria-label="Cadeau home"><img src="/brand/logo-header.svg" alt="Cadeau"></a>
     <nav class="navlinks">
       <a href="/#how" data-go="landing" data-anchor="how">How it works</a>
       <a href="/#card" data-go="landing" data-anchor="card">The card</a>
@@ -280,8 +280,8 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
       </div>
       <div class="hero-art">
         <span class="art-chip top">01 · Sender funds</span>
-        <img class="hero-card" src="/brand/card-sample.png" alt="Tessera USDC gift card" width="1200" height="744">
-        <span class="claim-chip"><i></i>Gas paid by Tessera</span>
+        <img class="hero-card" src="/brand/card-sample.png" alt="Cadeau USDC gift card" width="1200" height="744">
+        <span class="claim-chip"><i></i>Gas paid by Cadeau</span>
         <span class="art-chip bot">03 · Recipient claims</span>
       </div>
     </div>
@@ -302,7 +302,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
       <div class="steps">
         <div class="step"><span class="num">01 / FUND</span><h3>Create &amp; fund</h3><p>Choose an amount, add a message, and fund it with USDC on Arc. A unique code is made in your browser.</p></div>
         <div class="step"><span class="num">02 / SHARE</span><h3>Share the link</h3><p>The USDC waits in escrow on Arc. Send the link by email, WhatsApp, Telegram or X.</p></div>
-        <div class="step"><span class="num">03 / CLAIM</span><h3>They claim it</h3><p>They paste any wallet address. Tessera pays the gas, and the code can never be used twice.</p></div>
+        <div class="step"><span class="num">03 / CLAIM</span><h3>They claim it</h3><p>They paste any wallet address. Cadeau pays the gas, and the code can never be used twice.</p></div>
       </div>
     </div>
   </section>
@@ -323,7 +323,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
       <div>
         <div class="flip" id="flip">
           <div class="flip-inner">
-            <div class="face"><img src="/brand/card-sample.png" alt="Front of a Tessera gift card" width="1200" height="744"></div>
+            <div class="face"><img src="/brand/card-sample.png" alt="Front of a Cadeau gift card" width="1200" height="744"></div>
             <div class="back face">
               <span class="lbl">REDEEM ONCE · ON ARC</span>
               <span class="code-big">CDEU-XXXX-XXXX-XXXX-XXXX</span>
@@ -372,7 +372,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
 
   <section class="cta">
     <div class="wrap inner">
-      <img src="/brand/logo-standalone.svg" alt="Tessera">
+      <img src="/brand/logo-standalone.svg" alt="Cadeau">
       <h2>Send your first gift.</h2>
       <p>It takes under a minute. Their side takes one tap and an address.</p>
       <div class="row">
@@ -383,7 +383,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
   </section>
 
   <footer><div class="wrap foot">
-    <a class="logo" href="/" data-go="landing" aria-label="Tessera home"><img src="/brand/logo-header.svg" alt="Tessera"></a>
+    <a class="logo" href="/" data-go="landing" aria-label="Cadeau home"><img src="/brand/logo-header.svg" alt="Cadeau"></a>
     <span class="small">Built on Arc · Powered by USDC · © 2026</span>
     <nav><a href="#" id="ghLink" target="_blank" rel="noopener">GitHub</a><a href="#" id="contractLink" target="_blank" rel="noopener">Contract</a></nav>
   </div></footer>
@@ -457,7 +457,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
       <button class="btn btn-ink btn-full" id="checkBtn" type="button" style="margin-top:16px">Check code</button>
     </div>
     <div class="cd" id="cdPill" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8DB2F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>EXPIRES IN <b id="cd">--</b></div>
-    <div class="claim-card" id="claimCard" hidden><img id="claimImg" src="/brand/card-sample.png" alt="Your Tessera gift card" width="1200" height="744"></div>
+    <div class="claim-card" id="claimCard" hidden><img id="claimImg" src="/brand/card-sample.png" alt="Your Cadeau gift card" width="1200" height="744"></div>
     <div class="claim-msg" id="claimMsg" hidden></div>
     <div id="claimBox" hidden>
       <div class="field" style="margin-top:0"><label for="addr">Where should we send it?</label><input class="input addr" id="addr" placeholder="0x…" autocapitalize="off" autocomplete="off" spellcheck="false"></div>
@@ -480,12 +480,12 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
 <script src="/vendor/ethers.umd.min.js"></script>
 <script>
 "use strict";
-const GITHUB_URL = "https://github.com/PhylippusRex/tessera";
+const GITHUB_URL = "https://github.com/PhylippusRex/cadeau";
 const $ = (id) => document.getElementById(id);
 const CODE_RE = /^CDEU(-[A-HJ-NP-Z2-9]{4}){4}$/;
 const AMOUNT_RE = /^\d{1,9}(\.\d{1,6})?$/;
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-const TESSERA_ABI = ["function createGift(bytes32 codeHash, uint256 amount, string message)"];
+const CADEAU_ABI = ["function createGift(bytes32 codeHash, uint256 amount, string message)"];
 const USDC_ABI = [
   "function approve(address,uint256) returns (bool)",
   "function allowance(address,address) view returns (uint256)",
@@ -611,7 +611,7 @@ $("amount").addEventListener("input", (e) => {
 
 function showResult(o) {
   const link = location.origin + "/g/" + o.code;
-  const intro = "You've received a $" + fmtAmt(o.amount) + " USDC gift on Tessera!";
+  const intro = "You've received a $" + fmtAmt(o.amount) + " USDC gift on Cadeau!";
   const enc = encodeURIComponent;
   $("sendForm").hidden = true;
   $("sendResult").hidden = false;
@@ -619,9 +619,9 @@ function showResult(o) {
   $("linkBox").textContent = link;
   $("shWhatsapp").href = "https://wa.me/?text=" + enc(intro + " Claim it here: " + link);
   $("shTelegram").href = "https://t.me/share/url?url=" + enc(link) + "&text=" + enc(intro);
-  $("shEmail").href = "mailto:?subject=" + enc("You've received a Tessera gift") + "&body=" + enc(intro + "\n\nClaim it here: " + link);
+  $("shEmail").href = "mailto:?subject=" + enc("You've received a Cadeau gift") + "&body=" + enc(intro + "\n\nClaim it here: " + link);
   $("shX").onclick = async () => { await copy(link); window.open("https://x.com/messages", "_blank"); setText("resultStatus", "Link copied. Paste it into the X DM."); };
-  $("shMore").onclick = () => { if (navigator.share) navigator.share({ title: "Tessera gift", text: intro, url: link }).catch(() => {}); else copy(link).then(() => setText("resultStatus", "Link copied.")); };
+  $("shMore").onclick = () => { if (navigator.share) navigator.share({ title: "Cadeau gift", text: intro, url: link }).catch(() => {}); else copy(link).then(() => setText("resultStatus", "Link copied.")); };
   $("shCopy").onclick = async () => { if (await copy(link)) setText("resultStatus", "Link copied ✓"); };
   $("txLink").href = cfg.explorerBase + "tx/" + o.txHash;
   window.scrollTo({ top: 0 });
@@ -641,7 +641,7 @@ async function onCreate() {
     const amount = ethers.parseUnits(amountStr, 6);
     const total = amount + BigInt(cfg.relayerFee);
     const usdc = new ethers.Contract(cfg.usdc, USDC_ABI, signer);
-    const tessera = new ethers.Contract(cfg.contract, TESSERA_ABI, signer);
+    const cadeau = new ethers.Contract(cfg.contract, CADEAU_ABI, signer);
     if ((await usdc.balanceOf(account)) < total) throw new Error("Not enough USDC. You need " + nice(ethers.formatUnits(total, 6)) + ".");
 
     if ((await usdc.allowance(account, cfg.contract)) < total) {
@@ -651,7 +651,7 @@ async function onCreate() {
     const code = makeCode();
     const codeHash = ethers.keccak256(ethers.toUtf8Bytes(code));
     setText("sendStatus", "2/2 · Confirm the gift in your wallet…");
-    const tx = await tessera.createGift(codeHash, amount, message);
+    const tx = await cadeau.createGift(codeHash, amount, message);
     saveHistory({ code: code, amount: amountStr, time: Date.now() }); // saved right away so the code is never lost
     setText("sendStatus", "Creating your gift on Arc…");
     const receipt = await tx.wait();
