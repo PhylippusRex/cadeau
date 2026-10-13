@@ -17,7 +17,7 @@ function giftEmailHtml({ amount, message, link, code, senderName, baseUrl }) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:20px;">
   <tr><td style="padding:32px 28px 8px 28px;text-align:center;">
     <div style="font-size:26px;font-weight:bold;line-height:1.2;">${headline}</div>
-    <div style="font-size:15px;color:#5c5e66;margin-top:8px;">Here is your Tessera USDC gift card.</div>
+    <div style="font-size:15px;color:#5c5e66;margin-top:8px;">Here is your Cadeau gift card.</div>
   </td></tr>
   <tr><td style="padding:16px 28px;text-align:center;">
     <img src="${esc(cardUrl)}" width="504" alt="${esc(amt)} USDC gift card" style="display:block;width:100%;max-width:504px;height:auto;border-radius:16px;margin:0 auto;">
@@ -31,10 +31,10 @@ function giftEmailHtml({ amount, message, link, code, senderName, baseUrl }) {
     <span style="display:inline-block;background:#f4f2ec;border-radius:10px;padding:10px 16px;font-family:'Courier New',monospace;font-size:18px;letter-spacing:1px;font-weight:bold;">${esc(code)}</span>
   </td></tr>
   <tr><td style="padding:0 28px 24px 28px;font-size:13px;color:#5c5e66;line-height:1.6;text-align:center;">
-    1. Tap <b>Claim your gift</b> &nbsp;2. Paste a wallet address that can receive USDC on Arc &nbsp;3. Done. Tessera pays the gas.
+    1. Tap <b>Claim your gift</b> &nbsp;2. Paste a wallet address that can receive USDC on Arc &nbsp;3. Done. Cadeau pays the gas.
   </td></tr>
   <tr><td style="border-top:1px solid #e5e3dc;padding:20px 28px;text-align:center;">
-    <img src="${b}/brand/logo-standalone.png" width="72" alt="Tessera" style="display:inline-block;height:auto;border:0;">
+    <img src="${b}/brand/logo-standalone.png" width="72" alt="Cadeau" style="display:inline-block;height:auto;border:0;">
     <div style="font-size:12px;color:#8a8c94;margin-top:12px;line-height:1.5;">Single-use gift. Anyone with this link can claim it, so keep it private.</div>
   </td></tr>
 </table></td></tr></table></body></html>`;
@@ -49,7 +49,7 @@ async function sendGiftEmail({ to, amount, message, link, code, senderName, base
     subject: senderName ? `${senderName} sent you a ${amt} USDC gift` : `You received a ${amt} USDC gift`,
     html: giftEmailHtml({ amount, message, link, code, senderName, baseUrl }),
     text:
-      `${senderName ? senderName + " sent you" : "You've received"} a ${amt} USDC gift on Tessera.\n\n` +
+      `${senderName ? senderName + " sent you" : "You've received"} a ${amt} USDC gift on Cadeau.\n\n` +
       (message ? `Message: ${message}\n\n` : "") +
       `Claim it: ${link}\nOr go to ${baseUrl}/claim and enter this code: ${code}\n\n` +
       `This is a single-use gift. Anyone with the link can claim it, so keep it private.`,
