@@ -12,12 +12,12 @@ async function main() {
   console.log("Deployer:", deployer.address);
   console.log("Gas balance:", ethers.formatEther(await ethers.provider.getBalance(deployer.address)), "USDC");
 
-  const Tessera = await ethers.getContractFactory("Tessera");
-  const tessera = await Tessera.deploy(usdc, relayer, fee);
-  const receipt = await tessera.deploymentTransaction().wait();
-  const address = await tessera.getAddress();
+  const Cadeau = await ethers.getContractFactory("Cadeau");
+  const cadeau = await Cadeau.deploy(usdc, relayer, fee);
+  const receipt = await cadeau.deploymentTransaction().wait();
+  const address = await cadeau.getAddress();
 
-  const abi = (await hre.artifacts.readArtifact("Tessera")).abi;
+  const abi = (await hre.artifacts.readArtifact("Cadeau")).abi;
   fs.mkdirSync("deployments", { recursive: true });
   fs.writeFileSync(`deployments/${network.name}.json`, JSON.stringify({
     network: network.name,
