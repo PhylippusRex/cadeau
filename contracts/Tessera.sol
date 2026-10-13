@@ -6,10 +6,10 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-/// @title Tessera - single-use USDC gift codes
+/// @title Cadeau - single-use USDC gift codes
 /// Sender deposits amount + relayerFee. Recipient gets exactly `amount`;
 /// the relayer gets `fee` to cover the gas it paid.
-contract Tessera is Ownable, ReentrancyGuard {
+contract Cadeau is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     enum Status { None, Active, Redeemed, Refunded }
