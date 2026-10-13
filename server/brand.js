@@ -47,7 +47,7 @@ function faviconSvg() {
 }
 
 // The gift card (1200 wide). The code on it is always masked: real codes never go into images.
-function cardSvg(amount = "10", code = "TSRA-XXXX-XXXX-XXXX-XXXX") {
+function cardSvg(amount = "10", code = "CDEU-XXXX-XXXX-XXXX-XXXX") {
   const txt = fmtCardAmount(amount);
   const size = txt.length <= 6 ? 91 : Math.max(46, (91 * 6) / txt.length);
   const ms = +(158.2 / MARK_C.w).toFixed(5), ws = +(251.4 / WORD.w).toFixed(5);
