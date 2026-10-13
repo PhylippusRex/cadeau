@@ -1,25 +1,54 @@
-// Cadeau brand assets (traced from the design files) + SVG/PNG generators.
+// Cadeau brand assets (Reconstructed: Programmatic SVG + New Visual Style)
 const path = require("path");
 const { Resvg } = require("@resvg/resvg-js");
 
-const LIME = "#CFDE24", CHARCOAL = "#2A2930", WATERMARK = "#35343B", INK = "#151A20";
+// --- Constants & Colors ---
+const LIME = "#CFDE24";
+const CHARCOAL = "#2A2930";
+const WATERMARK = "#35343B";
+const INK = "#151A20";
+const WHITE = "#FFFFFF";
 
+// --- Fonts ---
+// Ensure these files exist in ./fonts/
+// Amaranth-Bold.ttf, Amaranth-Regular.ttf, Manrope-Bold.ttf, Manrope-Medium.ttf, Manrope-Regular.ttf
+const FONT_DIR = path.join(__dirname, "fonts");
+const FONT_FILES = [
+  "Amaranth-Bold.ttf", 
+  "Amaranth-Regular.ttf", 
+  "Manrope-Bold.ttf", 
+  "Manrope-Medium.ttf", 
+  "Manrope-Regular.ttf"
+].map((f) => path.join(FONT_DIR, f));
+
+// --- Path Data (Traced from design) ---
+// Note: WORD path is retained for compatibility but not used in the new Card visual (which uses CADEAU inside the box)
 const WORD = { w: 890, h: 166, d: "M288,165C266,161 252,148 248,128C247,125 247,122 247,121C247,120 250,120 260,120L273,120L274,123C279,146 318,144 321,121C322,107 311,96 298,96C285,96 270,90 261,82C243,66 242,35 260,16C288,-13 341,1 346,40L347,46L334,46L321,46L320,41C316,24 284,22 276,38C272,46 273,56 278,62C282,67 286,69 299,70C313,72 322,75 329,81C355,101 352,144 323,159C313,164 298,167 288,165ZM414,165C392,162 376,147 373,127L372,120L386,120L399,120L399,124C402,138 423,144 437,135C455,124 445,96 423,96C416,96 404,93 398,90C369,76 364,36 387,15C416,-12 464,1 471,39C472,42 472,45 472,45C472,46 466,46 459,46L446,46L445,41C441,25 412,21 402,36C398,42 398,56 402,61C406,67 412,69 422,70C440,72 450,76 459,85C481,107 475,147 447,160C438,164 423,167 414,165ZM117,83L117,2L170,2L224,2L224,16L224,29L184,29L144,29L144,50L144,70L178,70L211,70L211,83L211,96L178,96L144,96L144,116L144,137L184,137L224,137L224,150L224,164L170,164L117,164L117,83ZM503,83L503,2L556,2L610,2L610,16L610,29L570,29L530,29L530,50L530,70L564,70L597,70L597,83L597,96L564,96L530,96L530,116L530,137L570,137L610,137L610,150L610,164L556,164L503,164L503,83ZM639,117L639,70L652,70L665,70L652,49L639,28L639,15L639,2L670,2C699,3 702,3 710,5C733,12 746,27 746,50C746,70 736,84 717,91C713,93 711,94 711,95C712,95 721,111 733,129C745,148 754,163 754,164C754,164 747,164 739,164L724,164L703,130L682,96L674,96L666,96L666,130L666,164L652,164L639,164L639,117ZM34,94L34,26L17,26L0,26L0,14L0,2L47,2L94,2L94,14L94,26L77,26L60,26L60,94L60,163L47,163L34,163L34,94ZM763,162C763,161 825,0 826,0C826,0 874,122 888,158L890,163L876,163L862,162L858,154L855,146L826,145L797,145L794,154L791,163L777,163C769,163 763,163 763,162ZM845,120C845,119 841,106 835,91C827,68 826,65 825,67C825,68 820,81 816,94C811,107 807,119 806,120C806,122 807,122 826,122L846,122L845,120ZM711,65C721,59 723,44 714,36C708,30 702,29 685,29C677,29 671,29 671,29C671,30 677,39 684,50L696,70L701,69C704,68 708,66 711,65Z" };
+
 const MARK_H = { w: 751, h: 654, sil: "M59,653C30,648 6,623 1,593C-0,584 -0,235 1,226C6,197 29,172 57,167C69,164 682,164 694,167C719,172 741,192 748,219L750,226L750,410L750,592L748,600C740,628 718,649 691,653C683,654 67,654 59,653ZM216,147C180,139 151,112 140,75C138,68 138,65 137,36L137,4L166,4C212,5 228,11 252,34C275,58 281,75 281,121L281,149L253,149C229,149 223,149 216,147ZM300,131C298,102 299,90 300,84C308,44 336,14 374,4C384,2 405,0 430,0L440,0L440,15C442,54 441,65 435,82C422,117 389,143 353,147C348,147 334,148 322,149L300,149L300,131Z", lime: "M60,640C40,636 23,619 15,598C13,591 12,246 14,229C17,205 36,185 60,179C65,178 84,178 171,178L276,178L276,410L276,641L172,641C92,641 66,641 60,640ZM305,410L305,178L495,178C703,178 692,178 705,184C718,191 732,207 735,222C738,230 738,588 736,597C730,619 710,637 688,640C683,641 623,641 493,641L305,641L305,410ZM221,138C194,133 169,114 156,88C148,71 146,59 146,30L146,14L163,14C205,14 228,22 248,45C266,65 272,85 272,124L272,139L249,139C237,139 224,138 221,138ZM310,137C308,131 309,92 310,84C317,50 344,23 377,14C386,12 428,9 430,10C431,12 432,46 431,56C427,90 405,120 373,132C361,136 350,138 328,139L310,139L310,137Z" };
+
 const MARK_S = { w: 1171, h: 1021, sil: "M56,1019C33,1014 12,995 3,970L0,962L0,644C0,423 0,324 1,320C6,288 30,264 61,259C65,258 130,258 252,258L437,258L439,270L441,283L441,645C441,977 441,1009 439,1015L438,1021L250,1021C94,1021 61,1021 56,1019ZM466,1017C466,990 466,266 466,263L466,258L785,258C999,258 1106,258 1110,259C1140,264 1163,286 1169,317C1171,324 1171,355 1171,644L1170,962L1168,970C1161,989 1148,1005 1131,1013C1114,1022 1146,1021 787,1021L466,1021L466,1017ZM348,232C290,224 238,180 220,123C214,104 214,101 213,53L213,8L260,8L306,9L318,12C373,26 413,64 431,117C438,137 438,141 439,190L439,233L395,233C371,233 350,233 348,232ZM467,213C466,171 466,137 469,126C485,63 531,18 593,5C603,3 684,-1 686,0C687,2 689,80 688,89C681,157 631,213 563,228C553,230 536,231 492,233L468,233L467,213Z", lime: "M60,1007C40,1003 22,987 15,966C13,959 12,334 14,321C18,298 33,281 56,273C61,272 69,271 246,271L431,271L431,639L431,1008L249,1008C104,1008 66,1008 60,1007ZM476,639L476,271L793,271C1099,271 1110,272 1115,273C1138,281 1154,299 1157,322C1158,326 1158,429 1158,644L1158,960L1155,967C1149,987 1130,1003 1110,1007C1104,1008 1047,1008 789,1008L476,1008L476,639ZM359,223C297,218 243,173 227,112C224,97 223,88 223,53L223,18L259,18C296,18 302,18 318,23C368,35 408,74 423,124C428,141 428,146 429,186L429,224L399,224C382,224 364,223 359,223ZM478,220C476,211 476,141 478,132C491,70 538,25 599,15C609,13 641,11 664,11L677,11L678,37C679,84 678,97 671,118C658,159 628,192 589,209C566,219 551,221 503,223L478,223L478,220Z" };
+
+// MARK_C: The small gift box for the card corner
 const MARK_C = { w: 355, h: 309, sil: "M30,308C29,308 28,307 28,308C27,308 27,308 26,307C26,306 25,306 25,307C24,307 24,307 24,306C24,305 24,305 23,305C23,306 21,305 21,305C20,304 19,303 18,303C18,303 17,302 16,301C15,300 13,299 12,298C10,296 7,292 7,291C7,290 7,290 6,290C5,290 2,283 1,279C0,276 0,112 1,109C1,108 2,106 2,106C2,106 2,106 2,105C3,103 5,98 6,98C7,98 7,98 7,97C7,95 17,85 19,85C19,85 20,84 21,83C21,83 23,82 23,83C24,83 24,83 24,82C24,81 24,81 25,81C25,82 26,82 26,81C27,80 29,80 32,79C37,78 323,78 326,79C327,80 328,80 328,80C330,81 337,84 337,85C337,86 338,86 338,86C340,86 349,96 349,98C349,98 349,99 350,99C351,99 352,101 353,104C353,105 353,105 353,105C354,107 354,121 354,195C354,268 354,281 353,283C352,284 352,286 352,286C352,287 352,287 351,287C350,287 350,287 350,288C351,289 351,289 350,289C349,289 349,289 349,290C349,291 348,293 343,298C337,303 336,304 330,307L324,309L178,309C92,309 31,309 30,308ZM101,69C100,69 99,68 98,68C97,68 95,67 94,67C94,66 93,66 93,66C93,67 87,64 84,61C83,61 81,59 79,57C77,55 75,53 75,52C75,52 75,51 74,51C73,51 73,50 73,50C73,49 73,48 72,48C71,48 68,41 67,39C67,39 67,38 66,36C66,35 66,28 66,21L66,7L68,5C71,2 71,2 82,2C92,3 98,3 99,4C99,4 99,4 100,4C101,5 101,5 102,5C102,5 102,5 103,5C105,6 110,8 110,9C110,10 111,10 111,10C113,10 125,22 125,24C125,24 125,25 126,25C127,25 129,30 129,32C129,32 130,33 130,34C131,34 131,35 130,35C130,35 130,36 131,37C132,38 133,42 133,51C133,64 133,64 130,67L127,70L114,70C107,70 101,70 101,69ZM145,67C142,64 142,63 142,56C141,42 142,36 144,32C145,30 145,29 146,28C146,28 147,26 147,25C148,25 149,23 149,23C149,21 158,12 161,10C163,8 172,4 173,3C174,3 174,3 174,3C175,3 175,3 176,2C177,2 177,2 177,2C178,1 201,0 201,1C202,1 202,2 203,2C210,2 211,28 204,42C203,45 201,48 201,48C200,48 200,49 200,49C200,51 189,61 188,61C187,61 187,61 187,62C187,65 174,69 158,70L148,70L145,67Z", lime: "M31,295C24,293 18,286 15,279C13,274 13,271 13,194C13,102 12,107 22,99C31,91 31,91 84,91L131,91L131,194L131,297L84,297C40,297 36,297 31,295ZM145,194L145,91L232,91C303,91 320,91 323,92C333,96 340,104 342,115C343,120 343,145 343,198L342,276L340,280C337,287 331,292 324,295C319,297 317,297 232,297L145,297L145,194ZM102,60C84,54 74,39 74,17L74,12L84,12C108,13 122,27 123,50L123,61L115,61C110,61 105,60 102,60ZM151,50C152,24 168,10 194,10L199,10L199,21C198,45 183,60 159,60L151,60L151,50Z" };
+
 const HEADER = {"mark_w": 751, "mark_h": 654, "word_x": 809, "word_y": 349, "total_w": 1699, "total_h": 654};
 const STANDALONE_TEXT = {"x": 586, "y": 816, "w": 423, "h": 85};
-const CARD = { h: 743.8, radius: 25.1, watermark: "M679.3,610.1C676.2,609.4 486.6,528.4 486.6,527.8C486.6,527.6 487,527.4 487.5,527.4C489.3,527.4 492.1,521.2 544,400.1C573.4,331.5 597.5,275.2 597.7,275.1C598.2,274.5 784.3,354.6 787.4,356.7C799.1,364.6 805,380.3 801,393.4C800.2,396.1 718.2,587.7 715.9,592.2C709.2,605.5 693.5,613.3 679.3,610.1ZM425.9,502.2C366.4,476.6 367.4,477.1 363.1,473C353.3,463.9 349.8,450.1 354.1,437.8C356.3,431.8 438.9,239.9 440.4,237.5C448.1,225.4 464.8,219.1 477.9,223.6C484.3,225.7 588.1,270.6 588,271.2C588,271.5 563.8,328 534.4,396.7C504.9,465.4 480.8,522.2 480.8,522.9C480.8,523.5 481.1,524.5 481.5,525.1C482.5,526.5 486,527.9 425.9,502.2ZM632.5,276.5C627.9,276 624.9,275.1 616.1,271.6C601,265.7 600.1,263.5 606.7,246.7C614.6,226.3 624,215.8 640.8,208.7C650.3,204.7 664.4,203.6 673.1,206.2C696.8,213.5 699.3,216.9 693,233.3C688.9,243.7 687.7,246.2 684.3,251.4C672.9,268.5 651.9,278.7 632.5,276.5ZM580.7,257C558,248.7 547.5,239.3 541.3,222C535.8,206.4 536.9,193 545.4,173.1C551.6,158.4 554.6,157.2 568.5,163.1C587.1,171 596.3,180.3 601.5,196.5C606.8,212.9 605.3,225.9 595.7,247.6C591.9,256.1 586.9,259.3 580.7,257Z" };
 
-const FONT_DIR = path.join(__dirname, "fonts");
-const FONT_FILES = ["BarlowSemiCondensed-Bold.ttf", "BarlowSemiCondensed-Regular.ttf", "Barlow-Medium.ttf"].map((f) => path.join(FONT_DIR, f));
+// Watermark path for the card background
+const CARD = { 
+  h: 744, // Updated to match new standard height
+  radius: 25, 
+  watermark: "M679.3,610.1C676.2,609.4 486.6,528.4 486.6,527.8C486.6,527.6 487,527.4 487.5,527.4C489.3,527.4 492.1,521.2 544,400.1C573.4,331.5 597.5,275.2 597.7,275.1C598.2,274.5 784.3,354.6 787.4,356.7C799.1,364.6 805,380.3 801,393.4C800.2,396.1 718.2,587.7 715.9,592.2C709.2,605.5 693.5,613.3 679.3,610.1ZM425.9,502.2C366.4,476.6 367.4,477.1 363.1,473C353.3,463.9 349.8,450.1 354.1,437.8C356.3,431.8 438.9,239.9 440.4,237.5C448.1,225.4 464.8,219.1 477.9,223.6C484.3,225.7 588.1,270.6 588,271.2C588,271.5 563.8,328 534.4,396.7C504.9,465.4 480.8,522.2 480.8,522.9C480.8,523.5 481.1,524.5 481.5,525.1C482.5,526.5 486,527.9 425.9,502.2ZM632.5,276.5C627.9,276 624.9,275.1 616.1,271.6C601,265.7 600.1,263.5 606.7,246.7C614.6,226.3 624,215.8 640.8,208.7C650.3,204.7 664.4,203.6 673.1,206.2C696.8,213.5 699.3,216.9 693,233.3C688.9,243.7 687.7,246.2 684.3,251.4C672.9,268.5 651.9,278.7 632.5,276.5ZM580.7,257C558,248.7 547.5,239.3 541.3,222C535.8,206.4 536.9,193 545.4,173.1C551.6,158.4 554.6,157.2 568.5,163.1C587.1,171 596.3,180.3 601.5,196.5C606.8,212.9 605.3,225.9 595.7,247.6C591.9,256.1 586.9,259.3 580.7,257Z" 
+};
+
+// --- Helpers ---
 
 const markPaths = (M) =>
   `<path fill="#000" fill-rule="evenodd" d="${M.sil}"/><path fill="${LIME}" fill-rule="evenodd" d="${M.lime}"/>`;
+
 const wordPath = (fill, extra = "") => `<path fill="${fill}" fill-rule="evenodd" ${extra} d="${WORD.d}"/>`;
 
-// Amount text for the card: 10 -> "10", 0.05 -> "0.05", 12.5 -> "12.50", 1000 -> "1,000"
 function fmtCardAmount(a) {
   const n = Number(a);
   if (!isFinite(n) || n <= 0) return "0";
@@ -29,59 +58,108 @@ function fmtCardAmount(a) {
   return s;
 }
 
+// --- Generators ---
+
+// 1. Header (Logo + Wordmark) - Used for emails/headers
 function headerSvg(wordFill = "#000000") {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${HEADER.total_w} ${HEADER.total_h}"><g>${markPaths(MARK_H)}</g><g transform="translate(${HEADER.word_x} ${HEADER.word_y})">${wordPath(wordFill)}</g></svg>`;
 }
 
+// 2. Standalone (Logo + Wordmark stacked)
 function standaloneSvg() {
-  const s = SA_SCALE();
+  const s = +(STANDALONE_TEXT.w / WORD.w).toFixed(5);
   const ty = STANDALONE_TEXT.y + (STANDALONE_TEXT.h - WORD.h * s) / 2;
   const pad = 40;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${MARK_S.w + 2 * pad} ${MARK_S.h + 2 * pad}">${markPaths(MARK_S)}<g transform="translate(${STANDALONE_TEXT.x} ${ty.toFixed(1)}) scale(${s})">${wordPath(INK, 'stroke="#fff" stroke-width="7" paint-order="stroke" stroke-linejoin="round"')}</g></svg>`;
 }
-function SA_SCALE() { return +(STANDALONE_TEXT.w / WORD.w).toFixed(5); }
 
+// 3. Favicon (Just the mark)
 function faviconSvg() {
   const pad = 60;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${MARK_H.w + 2 * pad} ${MARK_H.h + 2 * pad}">${markPaths(MARK_H)}</svg>`;
 }
 
-// The gift card (1200 wide). The code on it is always masked: real codes never go into images.
+// 4. The Gift Card (1200 x 744)
+// Builds the card from scratch: Charcoal BG -> Watermark -> Text -> Logo
 function cardSvg(amount = "10", code = "CDEU-XXXX-XXXX-XXXX-XXXX") {
   const txt = fmtCardAmount(amount);
-  const size = txt.length <= 6 ? 91 : Math.max(46, (91 * 6) / txt.length);
-  const ms = +(158.2 / MARK_C.w).toFixed(5), ws = +(251.4 / WORD.w).toFixed(5);
+  // Dynamic font sizing for amount
+  const size = txt.length <= 6 ? 90 : Math.max(46, (90 * 6) / txt.length);
+  
+  // Scale for the small corner logo (MARK_C)
+  const ms = +(160 / MARK_C.w).toFixed(5); 
+
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="${CARD.h}" viewBox="0 0 1200 ${CARD.h}">` +
+    // Background
     `<rect width="1200" height="${CARD.h}" rx="${CARD.radius}" fill="${CHARCOAL}"/>` +
+    
+    // Watermark (The faint gift box in the center)
     `<path fill="${WATERMARK}" fill-rule="evenodd" d="${CARD.watermark}"/>` +
-    `<text x="47" y="73.2" font-family="Barlow Semi Condensed" font-weight="400" font-size="50" fill="#fff">$</text>` +
-    `<text transform="translate(74.5 101.5) scale(1.08 1)" font-family="Barlow Semi Condensed" font-weight="700" font-size="${size}" fill="#fff">${txt}</text>` +
-    `<g transform="translate(948.2 28.2) scale(${ms})">${markPaths(MARK_C)}</g>` +
-    `<g transform="translate(903.4 181.5) scale(${ws})">${wordPath("#FFFFFF")}</g>` +
-    `<text x="1154.8" y="700" text-anchor="end" font-family="Barlow" font-weight="500" font-size="36.5" fill="#fff" textLength="506" lengthAdjust="spacing">${code}</text>` +
+    
+    // Amount: White Dollar Sign
+    `<text x="45" y="85" font-family="Manrope" font-weight="500" font-size="50" fill="${WHITE}">$</text>` +
+    
+    // Amount: Lime Number
+    `<text x="80" y="115" font-family="Manrope" font-weight="700" font-size="${size}" fill="${LIME}">${txt}</text>` +
+    
+    // Top Right Logo (Gift Box with CADEAU inside)
+    `<g transform="translate(960 30) scale(${ms})">` +
+      `${markPaths(MARK_C)}` +
+      // "CADEAU" text inside the lime box area. 
+      // Coordinates approximated to center within the right half of the lime shape
+      `<text x="235" y="210" font-family="Amaranth" font-weight="700" font-size="42" fill="${INK}" text-anchor="middle">CADEAU</text>` +
+    `</g>` +
+    
+    // Code at bottom right
+    `<text x="1155" y="700" text-anchor="end" font-family="Manrope" font-weight="500" font-size="36" fill="${WHITE}" letter-spacing="1">${code}</text>` +
+    
     `</svg>`;
 }
 
-// Link-preview picture (1200x630): the card centred on white
-function ogSvg(amount = "10") {
-  const ch = 520, sc = ch / CARD.h, cw = 1200 * sc;
-  const inner = cardSvg(amount).replace(/^<svg[^>]*>/, "<g>").replace(/<\/svg>$/, "</g>");
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#FFFFFF"/><g transform="translate(${((1200 - cw) / 2).toFixed(1)} ${((630 - ch) / 2).toFixed(1)}) scale(${sc.toFixed(5)})">${inner}</g></svg>`;
+// 5. OG Image (Card centered on white)
+function ogSvg(amount = "10", code = "CDEU-XXXX-XXXX-XXXX-XXXX") {
+  const ch = 520;
+  const sc = ch / CARD.h;
+  const cw = 1200 * sc;
+  
+  // Get the raw inner content of the card SVG
+  const cardRaw = cardSvg(amount, code);
+  const inner = cardRaw.replace(/^<svg[^>]*>/, "<g>").replace(/<\/svg>$/, "</g>");
+  
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">` +
+    `<rect width="1200" height="630" fill="#FFFFFF"/>` +
+    `<g transform="translate(${((1200 - cw) / 2).toFixed(1)} ${((630 - ch) / 2).toFixed(1)}) scale(${sc.toFixed(5)})">${inner}</g>` +
+    `</svg>`;
 }
 
-// Generic preview (no amount): header logo centred on white
+// 6. Default OG (Logo centered on white)
 function ogDefaultSvg() {
-  const sc = 700 / HEADER.total_w, lh = HEADER.total_h * sc;
+  const sc = 700 / HEADER.total_w;
+  const lh = HEADER.total_h * sc;
   const inner = headerSvg("#000000").replace(/^<svg[^>]*>/, "<g>").replace(/<\/svg>$/, "</g>");
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#FFFFFF"/><g transform="translate(250 ${((630 - lh) / 2).toFixed(1)}) scale(${sc.toFixed(5)})">${inner}</g></svg>`;
 }
 
+// --- Renderer ---
+
 function png(svg, width, background) {
   return new Resvg(svg, {
     background,
-    font: { fontFiles: FONT_FILES, loadSystemFonts: false },
+    font: { 
+      fontFiles: FONT_FILES, 
+      loadSystemFonts: false // Requirement: do not load system fonts
+    },
     fitTo: { mode: "width", value: width },
   }).render().asPng();
 }
 
-module.exports = { fmtCardAmount, headerSvg, standaloneSvg, faviconSvg, cardSvg, ogSvg, ogDefaultSvg, png };
+module.exports = { 
+  fmtCardAmount, 
+  headerSvg, 
+  standaloneSvg, 
+  faviconSvg, 
+  cardSvg, 
+  ogSvg, 
+  ogDefaultSvg, 
+  png 
+};
