@@ -326,7 +326,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
             <div class="face"><img src="/brand/card-sample.png" alt="Front of a Tessera gift card" width="1200" height="744"></div>
             <div class="back face">
               <span class="lbl">REDEEM ONCE · ON ARC</span>
-              <span class="code-big">TSRA-XXXX-XXXX-XXXX-XXXX</span>
+              <span class="code-big">CDEU-XXXX-XXXX-XXXX-XXXX</span>
               <p>Unclaimed after 30 days? The sender can take the USDC back.</p>
             </div>
           </div>
@@ -453,7 +453,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
   <section class="page"><div class="wrap claim-col">
     <div id="codeBox" hidden>
       <h1>Claim your gift</h1>
-      <div class="field"><label for="codeInput">Gift code</label><input class="input addr" id="codeInput" placeholder="TSRA-XXXX-XXXX-XXXX-XXXX" autocapitalize="characters" autocomplete="off"></div>
+      <div class="field"><label for="codeInput">Gift code</label><input class="input addr" id="codeInput" placeholder="CDEU-XXXX-XXXX-XXXX-XXXX" autocapitalize="characters" autocomplete="off"></div>
       <button class="btn btn-ink btn-full" id="checkBtn" type="button" style="margin-top:16px">Check code</button>
     </div>
     <div class="cd" id="cdPill" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8DB2F" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>EXPIRES IN <b id="cd">--</b></div>
@@ -482,7 +482,7 @@ footer{padding:32px 0;border-top:1px solid var(--line)}
 "use strict";
 const GITHUB_URL = "https://github.com/PhylippusRex/tessera";
 const $ = (id) => document.getElementById(id);
-const CODE_RE = /^TSRA(-[A-HJ-NP-Z2-9]{4}){4}$/;
+const CODE_RE = /^CDEU(-[A-HJ-NP-Z2-9]{4}){4}$/;
 const AMOUNT_RE = /^\d{1,9}(\.\d{1,6})?$/;
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const TESSERA_ABI = ["function createGift(bytes32 codeHash, uint256 amount, string message)"];
@@ -576,7 +576,7 @@ function makeCode() {
   const bytes = crypto.getRandomValues(new Uint8Array(16));
   let s = "";
   for (const b of bytes) s += ALPHABET[b % 32];
-  return "TSRA-" + s.slice(0, 4) + "-" + s.slice(4, 8) + "-" + s.slice(8, 12) + "-" + s.slice(12, 16);
+  return "CDEU-" + s.slice(0, 4) + "-" + s.slice(4, 8) + "-" + s.slice(8, 12) + "-" + s.slice(12, 16);
 }
 const validAmount = (s) => AMOUNT_RE.test(s) && Number(s) >= 0.01;
 function setSteps(n) {
@@ -698,7 +698,7 @@ async function startClaim(code) {
   setText("claimStatus", "");
   $("codeBox").hidden = !!claimCode && CODE_RE.test(claimCode);
   if (!claimCode) return;
-  if (!CODE_RE.test(claimCode)) { setText("claimStatus", "That code doesn't look right. Codes look like TSRA-XXXX-XXXX-XXXX-XXXX.", true); return; }
+  if (!CODE_RE.test(claimCode)) { setText("claimStatus", "That code doesn't look right. Codes look like CDEU-XXXX-XXXX-XXXX-XXXX.", true); return; }
   setText("claimStatus", "Checking your gift…");
   try {
     const g = await api("/api/preview", { code: claimCode });
