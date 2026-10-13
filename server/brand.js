@@ -11,18 +11,17 @@ const WHITE = "#FFFFFF";
 
 // --- Fonts ---
 // Ensure these files exist in ./fonts/
-// Amaranth-Bold.ttf, Amaranth-Regular.ttf, Manrope-Bold.ttf, Manrope-Medium.ttf, Manrope-Regular.ttf
+// Amaranth-Bold.ttf, Manrope-Bold.ttf, Manrope-Medium.ttf, Manrope-Regular.ttf
 const FONT_DIR = path.join(__dirname, "fonts");
 const FONT_FILES = [
   "Amaranth-Bold.ttf", 
-  "Amaranth-Regular.ttf", 
   "Manrope-Bold.ttf", 
   "Manrope-Medium.ttf", 
   "Manrope-Regular.ttf"
 ].map((f) => path.join(FONT_DIR, f));
 
 // --- Path Data (Traced from design) ---
-// Note: WORD path is retained for compatibility but not used in the new Card visual (which uses CADEAU inside the box)
+// WORD: The "TESSERA" wordmark (retained for compatibility, but not used in new Card visual)
 const WORD = { w: 890, h: 166, d: "M288,165C266,161 252,148 248,128C247,125 247,122 247,121C247,120 250,120 260,120L273,120L274,123C279,146 318,144 321,121C322,107 311,96 298,96C285,96 270,90 261,82C243,66 242,35 260,16C288,-13 341,1 346,40L347,46L334,46L321,46L320,41C316,24 284,22 276,38C272,46 273,56 278,62C282,67 286,69 299,70C313,72 322,75 329,81C355,101 352,144 323,159C313,164 298,167 288,165ZM414,165C392,162 376,147 373,127L372,120L386,120L399,120L399,124C402,138 423,144 437,135C455,124 445,96 423,96C416,96 404,93 398,90C369,76 364,36 387,15C416,-12 464,1 471,39C472,42 472,45 472,45C472,46 466,46 459,46L446,46L445,41C441,25 412,21 402,36C398,42 398,56 402,61C406,67 412,69 422,70C440,72 450,76 459,85C481,107 475,147 447,160C438,164 423,167 414,165ZM117,83L117,2L170,2L224,2L224,16L224,29L184,29L144,29L144,50L144,70L178,70L211,70L211,83L211,96L178,96L144,96L144,116L144,137L184,137L224,137L224,150L224,164L170,164L117,164L117,83ZM503,83L503,2L556,2L610,2L610,16L610,29L570,29L530,29L530,50L530,70L564,70L597,70L597,83L597,96L564,96L530,96L530,116L530,137L570,137L610,137L610,150L610,164L556,164L503,164L503,83ZM639,117L639,70L652,70L665,70L652,49L639,28L639,15L639,2L670,2C699,3 702,3 710,5C733,12 746,27 746,50C746,70 736,84 717,91C713,93 711,94 711,95C712,95 721,111 733,129C745,148 754,163 754,164C754,164 747,164 739,164L724,164L703,130L682,96L674,96L666,96L666,130L666,164L652,164L639,164L639,117ZM34,94L34,26L17,26L0,26L0,14L0,2L47,2L94,2L94,14L94,26L77,26L60,26L60,94L60,163L47,163L34,163L34,94ZM763,162C763,161 825,0 826,0C826,0 874,122 888,158L890,163L876,163L862,162L858,154L855,146L826,145L797,145L794,154L791,163L777,163C769,163 763,163 763,162ZM845,120C845,119 841,106 835,91C827,68 826,65 825,67C825,68 820,81 816,94C811,107 807,119 806,120C806,122 807,122 826,122L846,122L845,120ZM711,65C721,59 723,44 714,36C708,30 702,29 685,29C677,29 671,29 671,29C671,30 677,39 684,50L696,70L701,69C704,68 708,66 711,65Z" };
 
 const MARK_H = { w: 751, h: 654, sil: "M59,653C30,648 6,623 1,593C-0,584 -0,235 1,226C6,197 29,172 57,167C69,164 682,164 694,167C719,172 741,192 748,219L750,226L750,410L750,592L748,600C740,628 718,649 691,653C683,654 67,654 59,653ZM216,147C180,139 151,112 140,75C138,68 138,65 137,36L137,4L166,4C212,5 228,11 252,34C275,58 281,75 281,121L281,149L253,149C229,149 223,149 216,147ZM300,131C298,102 299,90 300,84C308,44 336,14 374,4C384,2 405,0 430,0L440,0L440,15C442,54 441,65 435,82C422,117 389,143 353,147C348,147 334,148 322,149L300,149L300,131Z", lime: "M60,640C40,636 23,619 15,598C13,591 12,246 14,229C17,205 36,185 60,179C65,178 84,178 171,178L276,178L276,410L276,641L172,641C92,641 66,641 60,640ZM305,410L305,178L495,178C703,178 692,178 705,184C718,191 732,207 735,222C738,230 738,588 736,597C730,619 710,637 688,640C683,641 623,641 493,641L305,641L305,410ZM221,138C194,133 169,114 156,88C148,71 146,59 146,30L146,14L163,14C205,14 228,22 248,45C266,65 272,85 272,124L272,139L249,139C237,139 224,138 221,138ZM310,137C308,131 309,92 310,84C317,50 344,23 377,14C386,12 428,9 430,10C431,12 432,46 431,56C427,90 405,120 373,132C361,136 350,138 328,139L310,139L310,137Z" };
@@ -37,7 +36,7 @@ const STANDALONE_TEXT = {"x": 586, "y": 816, "w": 423, "h": 85};
 
 // Watermark path for the card background
 const CARD = { 
-  h: 744, // Updated to match new standard height
+  h: 744, 
   radius: 25, 
   watermark: "M679.3,610.1C676.2,609.4 486.6,528.4 486.6,527.8C486.6,527.6 487,527.4 487.5,527.4C489.3,527.4 492.1,521.2 544,400.1C573.4,331.5 597.5,275.2 597.7,275.1C598.2,274.5 784.3,354.6 787.4,356.7C799.1,364.6 805,380.3 801,393.4C800.2,396.1 718.2,587.7 715.9,592.2C709.2,605.5 693.5,613.3 679.3,610.1ZM425.9,502.2C366.4,476.6 367.4,477.1 363.1,473C353.3,463.9 349.8,450.1 354.1,437.8C356.3,431.8 438.9,239.9 440.4,237.5C448.1,225.4 464.8,219.1 477.9,223.6C484.3,225.7 588.1,270.6 588,271.2C588,271.5 563.8,328 534.4,396.7C504.9,465.4 480.8,522.2 480.8,522.9C480.8,523.5 481.1,524.5 481.5,525.1C482.5,526.5 486,527.9 425.9,502.2ZM632.5,276.5C627.9,276 624.9,275.1 616.1,271.6C601,265.7 600.1,263.5 606.7,246.7C614.6,226.3 624,215.8 640.8,208.7C650.3,204.7 664.4,203.6 673.1,206.2C696.8,213.5 699.3,216.9 693,233.3C688.9,243.7 687.7,246.2 684.3,251.4C672.9,268.5 651.9,278.7 632.5,276.5ZM580.7,257C558,248.7 547.5,239.3 541.3,222C535.8,206.4 536.9,193 545.4,173.1C551.6,158.4 554.6,157.2 568.5,163.1C587.1,171 596.3,180.3 601.5,196.5C606.8,212.9 605.3,225.9 595.7,247.6C591.9,256.1 586.9,259.3 580.7,257Z" 
 };
@@ -60,7 +59,7 @@ function fmtCardAmount(a) {
 
 // --- Generators ---
 
-// 1. Header (Logo + Wordmark) - Used for emails/headers
+// 1. Header (Logo + Wordmark)
 function headerSvg(wordFill = "#000000") {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${HEADER.total_w} ${HEADER.total_h}"><g>${markPaths(MARK_H)}</g><g transform="translate(${HEADER.word_x} ${HEADER.word_y})">${wordPath(wordFill)}</g></svg>`;
 }
@@ -80,7 +79,6 @@ function faviconSvg() {
 }
 
 // 4. The Gift Card (1200 x 744)
-// Builds the card from scratch: Charcoal BG -> Watermark -> Text -> Logo
 function cardSvg(amount = "10", code = "CDEU-XXXX-XXXX-XXXX-XXXX") {
   const txt = fmtCardAmount(amount);
   // Dynamic font sizing for amount
@@ -89,6 +87,7 @@ function cardSvg(amount = "10", code = "CDEU-XXXX-XXXX-XXXX-XXXX") {
   // Scale for the small corner logo (MARK_C)
   const ms = +(160 / MARK_C.w).toFixed(5); 
 
+  // NOTE: font-family includes fallbacks for browser preview
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="${CARD.h}" viewBox="0 0 1200 ${CARD.h}">` +
     // Background
     `<rect width="1200" height="${CARD.h}" rx="${CARD.radius}" fill="${CHARCOAL}"/>` +
@@ -97,21 +96,20 @@ function cardSvg(amount = "10", code = "CDEU-XXXX-XXXX-XXXX-XXXX") {
     `<path fill="${WATERMARK}" fill-rule="evenodd" d="${CARD.watermark}"/>` +
     
     // Amount: White Dollar Sign
-    `<text x="45" y="85" font-family="Manrope" font-weight="500" font-size="50" fill="${WHITE}">$</text>` +
+    `<text x="45" y="85" font-family="Manrope, sans-serif" font-weight="500" font-size="50" fill="${WHITE}">$</text>` +
     
     // Amount: Lime Number
-    `<text x="80" y="115" font-family="Manrope" font-weight="700" font-size="${size}" fill="${LIME}">${txt}</text>` +
+    `<text x="80" y="115" font-family="Manrope, sans-serif" font-weight="700" font-size="${size}" fill="${LIME}">${txt}</text>` +
     
     // Top Right Logo (Gift Box with CADEAU inside)
     `<g transform="translate(960 30) scale(${ms})">` +
       `${markPaths(MARK_C)}` +
-      // "CADEAU" text inside the lime box area. 
-      // Coordinates approximated to center within the right half of the lime shape
-      `<text x="235" y="210" font-family="Amaranth" font-weight="700" font-size="42" fill="${INK}" text-anchor="middle">CADEAU</text>` +
+      // "CADEAU" text inside the lime box area.
+      `<text x="235" y="210" font-family="Amaranth, sans-serif" font-weight="700" font-size="42" fill="${INK}" text-anchor="middle">CADEAU</text>` +
     `</g>` +
     
     // Code at bottom right
-    `<text x="1155" y="700" text-anchor="end" font-family="Manrope" font-weight="500" font-size="36" fill="${WHITE}" letter-spacing="1">${code}</text>` +
+    `<text x="1155" y="700" text-anchor="end" font-family="Manrope, sans-serif" font-weight="500" font-size="36" fill="${WHITE}" letter-spacing="1">${code}</text>` +
     
     `</svg>`;
 }
@@ -122,7 +120,6 @@ function ogSvg(amount = "10", code = "CDEU-XXXX-XXXX-XXXX-XXXX") {
   const sc = ch / CARD.h;
   const cw = 1200 * sc;
   
-  // Get the raw inner content of the card SVG
   const cardRaw = cardSvg(amount, code);
   const inner = cardRaw.replace(/^<svg[^>]*>/, "<g>").replace(/<\/svg>$/, "</g>");
   
@@ -147,7 +144,7 @@ function png(svg, width, background) {
     background,
     font: { 
       fontFiles: FONT_FILES, 
-      loadSystemFonts: false // Requirement: do not load system fonts
+      loadSystemFonts: false 
     },
     fitTo: { mode: "width", value: width },
   }).render().asPng();
