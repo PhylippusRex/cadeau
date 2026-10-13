@@ -25,12 +25,12 @@ const SHOW_CODE_IN_PREVIEW = true;
 const dep = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "deployments", `${NETWORK}.json`)));
 const provider = new ethers.JsonRpcProvider(RPC, dep.chainId, { staticNetwork: true, batchMaxCount: 1 });
 const wallet = new ethers.Wallet(process.env.RELAYER_PRIVATE_KEY, provider);
-const tessera = new ethers.Contract(dep.address, dep.abi, wallet);
+const cadeau = new ethers.Contract(dep.address, dep.abi, wallet);
 
-const CODE_RE = /^TSRA(-[A-HJ-NP-Z2-9]{4}){4}$/;
+const CODE_RE = /^CDEU(-[A-HJ-NP-Z2-9]{4}){4}$/;
 const AMOUNT_RE = /^\d{1,9}(\.\d{1,6})?$/;
 const STATUS = ["none", "active", "redeemed", "refunded"];
-const MASK = "TSRA-XXXX-XXXX-XXXX-XXXX";
+const MASK = "CDEU2-XXXX-XXXX-XXXX-XXXX";
 const baseUrl = (req) =>
   (process.env.BASE_URL || `${req.protocol}://${req.get("host")}`).replace(/\/$/, "");
 
@@ -55,7 +55,7 @@ function readCode(body) {
 }
 async function lookup(code) {
   const hash = ethers.keccak256(ethers.toUtf8Bytes(code));
-  const g = await tessera.gifts(hash);
+  const g = await cadeau.gifts(hash);
   return {
     status: STATUS[Number(g.status)],
     amount: ethers.formatUnits(g.amount, 6),
@@ -77,7 +77,7 @@ app.get("/api/config", async (_req, res) => {
       rpc: process.env.PUBLIC_RPC || RPC,
       contract: dep.address,
       usdc: dep.usdc,
-      relayerFee: (await tessera.relayerFee()).toString(),
+      relayerFee: (await cadeau.relayerFee()).toString(),
       explorerBase: EXPLORER_BASE,
     });
   } catch (e) {
@@ -114,7 +114,7 @@ async function handleClaim(req, res) {
     if (g.status !== "active") return res.status(400).json({ error: `Gift is ${g.status}` });
     if (Date.now() / 1000 > g.expiresAt) return res.status(400).json({ error: "Gift expired" });
 
-    const receipt = await (await tessera.claim(code, recipient)).wait();
+    const receipt = await (await cadeau.claim(code, recipient)).wait();
     res.json({ ok: true, amount: g.amount, txHash: receipt.hash, explorer: `${EXPLORER_BASE}tx/${receipt.hash}` });
   } catch (e) {
     console.error(e);
@@ -203,12 +203,12 @@ const appFile = path.join(PUBLIC_DIR, SITE_FILE);
 app.get(["/", "/send", "/claim", "/history", "/g/:code"], async (req, res) => {
   if (!fs.existsSync(appFile)) return res.status(404).send(`Website file (public/${SITE_FILE}) is not installed yet.`);
   const base = baseUrl(req);
-  let title = "Tessera: gift USDC like a gift card";
+  let title = "Cadeau: send USDC gifts on Arc";
   let desc = "Create a single-use USDC gift code on Arc and share it as a link. They claim it with any wallet, no gas needed.";
   let image = `${base}/og.png`;
   const code = String(req.params.code || "").toUpperCase();
   if (CODE_RE.test(code)) {
-    title = "You've received a Tessera gift";
+    title = "You've received a Cadeau gift";
     desc = "Tap to claim your USDC gift card. No gas needed.";
     try {
       const g = await lookup(code);
@@ -225,4 +225,4 @@ app.use("/fonts", express.static(path.join(__dirname, "fonts"), { maxAge: "30d" 
 app.use(express.static(PUBLIC_DIR, { index: false }));
 
 app.listen(process.env.PORT || 3001, () =>
-  console.log(`Tessera running on :${process.env.PORT || 3001} (${NETWORK}) fonts:${HAS_MANROPE ? "Manrope" : "Barlow"}`));
+  console.log(`Cadeau running on :${process.env.PORT || 3001} (${NETWORK}) fonts:${HAS_MANROPE ? "Manrope" : "Barlow"}`));
