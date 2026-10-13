@@ -176,7 +176,7 @@ function cachedPng(key, make) {
   return imgCache.get(key);
 }
 function sendPng(res, buf, isPrivate) {
-  res.set({ "Content-Type": "image/png", "Cache-Control": isPrivate ? "private, no-store" : "public, max-age=86400" });
+  res.set({ "Content-Type": "image/png", "Cache-Control": isPrivate ? "private, no-store" : "public, no-cache"" });
   res.send(buf);
 }
 const goodAmount = (a) => AMOUNT_RE.test(a) && Number(a) > 0;
