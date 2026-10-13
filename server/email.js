@@ -17,7 +17,7 @@ function giftEmailHtml({ amount, message, link, code, senderName, baseUrl }) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:20px;">
   <tr><td style="padding:32px 28px 8px 28px;text-align:center;">
     <div style="font-size:26px;font-weight:bold;line-height:1.2;">${headline}</div>
-    <div style="font-size:15px;color:#5c5e66;margin-top:8px;">Here is your Cadeau gift card.</div>
+    <div style="font-size:15px;color:#5c5e66;margin-top:8px;">Here is your Cadeau USDC gift card.</div>
   </td></tr>
   <tr><td style="padding:16px 28px;text-align:center;">
     <img src="${esc(cardUrl)}" width="504" alt="${esc(amt)} USDC gift card" style="display:block;width:100%;max-width:504px;height:auto;border-radius:16px;margin:0 auto;">
@@ -41,26 +41,27 @@ function giftEmailHtml({ amount, message, link, code, senderName, baseUrl }) {
 }
 
 async function sendGiftEmail({ to, amount, message, link, code, senderName, baseUrl }) {
-  if (!process.env.RESEND_API_KEY) throw new Error("RESEND_API_KEY missing");
+  if (!process.env.BREVO_API_KEY) throw new Error("BREVO_API_KEY missing");
+  if (!process.env.EMAIL_FROM_ADDRESS) throw new Error("EMAIL_FROM_ADDRESS missing");
   const amt = fmtCardAmount(amount);
   const payload = {
-    from: process.env.EMAIL_FROM,
-    to: [to],
+    sender: { name: process.env.EMAIL_FROM_NAME || "Cadeau", email: process.env.EMAIL_FROM_ADDRESS },
+    to: [{ email: to }],
     subject: senderName ? `${senderName} sent you a ${amt} USDC gift` : `You received a ${amt} USDC gift`,
-    html: giftEmailHtml({ amount, message, link, code, senderName, baseUrl }),
-    text:
+    htmlContent: giftEmailHtml({ amount, message, link, code, senderName, baseUrl }),
+    textContent:
       `${senderName ? senderName + " sent you" : "You've received"} a ${amt} USDC gift on Cadeau.\n\n` +
       (message ? `Message: ${message}\n\n` : "") +
       `Claim it: ${link}\nOr go to ${baseUrl}/claim and enter this code: ${code}\n\n` +
       `This is a single-use gift. Anyone with the link can claim it, so keep it private.`,
   };
-  if (process.env.EMAIL_REPLY_TO) payload.reply_to = process.env.EMAIL_REPLY_TO;
-  const res = await fetch("https://api.resend.com/emails", {
+  if (process.env.EMAIL_REPLY_TO) payload.replyTo = { email: process.env.EMAIL_REPLY_TO };
+  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
-    headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    headers: { "api-key": process.env.BREVO_API_KEY, "Content-Type": "application/json", accept: "application/json" },
     body: JSON.stringify(payload),
   });
-  if (!res.ok) throw new Error(`Resend error: ${await res.text()}`);
+  if (!res.ok) throw new Error(`Brevo error: ${await res.text()}`);
 }
 
 module.exports = { esc, sendGiftEmail };
